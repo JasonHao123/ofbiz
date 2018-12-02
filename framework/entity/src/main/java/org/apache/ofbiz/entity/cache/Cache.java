@@ -18,6 +18,7 @@
  *******************************************************************************/
 package org.apache.ofbiz.entity.cache;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.ofbiz.base.util.Debug;
@@ -27,7 +28,7 @@ import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.GenericPK;
 import org.apache.ofbiz.entity.condition.EntityCondition;
 
-public class Cache {
+public class Cache implements Serializable{
 
     public static final String module = Cache.class.getName();
 

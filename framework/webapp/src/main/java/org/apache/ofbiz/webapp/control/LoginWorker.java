@@ -591,9 +591,9 @@ public class LoginWorker {
         request.setAttribute("security", security);
 
         session.setAttribute("delegatorName", delegator.getDelegatorName());
-        session.setAttribute("delegator", delegator);
-        session.setAttribute("dispatcher", dispatcher);
-        session.setAttribute("security", security);
+//        session.setAttribute("delegator", delegator);
+//        session.setAttribute("dispatcher", dispatcher);
+//        session.setAttribute("security", security);
 
         // get rid of the visit info since it was pointing to the previous database, and get a new one
         session.removeAttribute("visitor");

@@ -18,6 +18,7 @@
  *******************************************************************************/
 package org.apache.ofbiz.entity.cache;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ import org.apache.ofbiz.entity.model.ModelEntity;
 import org.apache.ofbiz.entity.util.EntityUtil;
 
 
-public class EntityListCache extends AbstractEntityConditionCache<Object, List<GenericValue>> {
+public class EntityListCache extends AbstractEntityConditionCache<Object, List<GenericValue>> implements Serializable{
 
     public static final String module = EntityListCache.class.getName();
 

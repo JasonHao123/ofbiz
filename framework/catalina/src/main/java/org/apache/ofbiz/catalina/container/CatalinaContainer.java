@@ -64,6 +64,7 @@ import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
 import org.apache.tomcat.util.scan.StandardJarScanner;
+import org.redisson.tomcat.RedissonSessionManager;
 import org.apache.ofbiz.base.component.ComponentConfig;
 import org.apache.ofbiz.base.concurrent.ExecutionPool;
 import org.apache.ofbiz.base.container.Container;
@@ -155,6 +156,7 @@ public class CatalinaContainer implements Container {
     protected String catalinaRuntimeHome;
 
     private String name;
+	private boolean redisSessionReplication;
 
     @Override
     public void init(List<StartupCommand> ofbizCommands, String name, String configFile) throws ContainerException {
@@ -167,6 +169,7 @@ public class CatalinaContainer implements Container {
 
         // embedded properties
         boolean useNaming = ContainerConfig.getPropertyValue(cc, "use-naming", false);
+        redisSessionReplication = ContainerConfig.getPropertyValue(cc, "redis-session-replication", false);
         //int debug = ContainerConfig.getPropertyValue(cc, "debug", 0);
 
         // grab some global context settings
@@ -579,7 +582,13 @@ public class CatalinaContainer implements Container {
         context.setReloadable(contextReloadable);
 
         context.setDistributable(contextIsDistributable);
-
+        if(redisSessionReplication) {
+	    		RedissonSessionManager manager = new RedissonSessionManager();
+	    		manager.setConfigPath(System.getProperty("ofbiz.home") + "/framework/catalina/config/redisson.yaml" );
+	    		manager.setReadMode("MEMORY");
+	    		manager.setUpdateMode("DEFAULT");
+        		context.setManager(manager);
+        }
         context.setCrossContext(crossContext);
         context.setPrivileged(appInfo.privileged);
         context.getServletContext().setAttribute("_serverId", appInfo.server);

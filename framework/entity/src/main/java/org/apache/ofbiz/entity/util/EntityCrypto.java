@@ -19,6 +19,7 @@
 package org.apache.ofbiz.entity.util;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -28,11 +29,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.shiro.crypto.AesCipherService;
 import org.apache.shiro.crypto.OperationMode;
-import org.apache.shiro.crypto.hash.DefaultHashService;
-import org.apache.shiro.crypto.hash.HashRequest;
-import org.apache.shiro.crypto.hash.HashService;
+import org.apache.ofbiz.entity.util.DefaultHashService;
+import org.apache.ofbiz.entity.util.HashRequest;
 import org.apache.ofbiz.base.crypto.DesCrypt;
 import org.apache.ofbiz.base.crypto.HashCrypt;
 import org.apache.ofbiz.base.util.Debug;
@@ -47,7 +46,7 @@ import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.model.ModelField.EncryptMethod;
 import org.apache.ofbiz.entity.transaction.TransactionUtil;
 
-public final class EntityCrypto {
+public final class EntityCrypto implements Serializable{
 
     public static final String module = EntityCrypto.class.getName();
 
@@ -211,7 +210,7 @@ public final class EntityCrypto {
         }
     }
 
-    protected abstract static class StorageHandler {
+    protected abstract static class StorageHandler implements Serializable{
         protected abstract Key generateNewKey() throws EntityCryptoException;
 
         protected abstract String getHashedKeyName(String originalKeyName);
@@ -224,7 +223,7 @@ public final class EntityCrypto {
         protected abstract String encryptValue(EncryptMethod encryptMethod, byte[] key, byte[] objBytes) throws GeneralException;
     }
 
-    protected static final class ShiroStorageHandler extends StorageHandler {
+    protected static final class ShiroStorageHandler extends StorageHandler implements Serializable{
         private final HashService hashService;
         private final AesCipherService cipherService;
         private final AesCipherService saltedCipherService;
@@ -348,7 +347,7 @@ public final class EntityCrypto {
         }
     };
 
-    protected static final class SaltedBase64StorageHandler extends StorageHandler {
+    protected static final class SaltedBase64StorageHandler extends StorageHandler implements Serializable{
         private final Key kek;
 
         protected SaltedBase64StorageHandler(byte[] kek) throws EntityCryptoException {

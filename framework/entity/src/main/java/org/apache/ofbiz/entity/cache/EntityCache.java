@@ -18,6 +18,7 @@
  *******************************************************************************/
 package org.apache.ofbiz.entity.cache;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import org.apache.ofbiz.base.util.Debug;
@@ -27,7 +28,7 @@ import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.condition.EntityCondition;
 import org.apache.ofbiz.entity.model.ModelEntity;
 
-public class EntityCache extends AbstractCache<GenericPK, GenericValue> {
+public class EntityCache extends AbstractCache<GenericPK, GenericValue> implements Serializable {
     public static final String module = EntityCache.class.getName();
 
     public EntityCache(String delegatorName) {

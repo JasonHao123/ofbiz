@@ -19,7 +19,7 @@
 package org.apache.ofbiz.base.crypto;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.shiro.crypto.AesCipherService;
+import org.apache.ofbiz.entity.util.AesCipherService;
 
 public class Main {
     public static void main(String[] args) throws Exception {

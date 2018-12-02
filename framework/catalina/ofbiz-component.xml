@@ -28,6 +28,7 @@ under the License.
     <container name="catalina-container" loaders="main" class="org.apache.ofbiz.catalina.container.CatalinaContainer">
         <!-- configuration for the Tomcat server -->
         <property name="use-naming" value="false"/>
+        <property name="redis-session-replication" value="true"/>
         <property name="debug" value="0"/>
         <property name="catalina-runtime-home" value="runtime/catalina"/>
         <property name="apps-context-reloadable" value="false"/>

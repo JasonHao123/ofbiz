@@ -19,9 +19,11 @@
 
 package org.apache.ofbiz.entity.cache;
 
+import java.io.Serializable;
+
 import org.apache.ofbiz.entity.condition.EntityCondition;
 
-public class EntityObjectCache extends AbstractEntityConditionCache<String, Object> {
+public class EntityObjectCache extends AbstractEntityConditionCache<String, Object> implements Serializable{
 
     public static final String module = EntityObjectCache.class.getName();
 

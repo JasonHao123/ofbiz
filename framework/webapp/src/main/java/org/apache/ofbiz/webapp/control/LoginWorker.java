@@ -83,6 +83,12 @@ import org.apache.ofbiz.service.ServiceUtil;
 import org.apache.ofbiz.webapp.WebAppUtil;
 import org.apache.ofbiz.webapp.stats.VisitHandler;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 /**
  * Common Workers
  */
@@ -875,21 +881,34 @@ public static String autoLogoutCleanCookies(GenericValue userLogin, HttpServletR
      * @param userLoginId
      * @return Returns "success" if user could be logged in or "error" if there was a problem.
      */
-    public static String loginUserWithUserLoginId(HttpServletRequest request, HttpServletResponse response, String userLoginId) {
+    public static String loginUserWithUserLoginId(HttpServletRequest request, HttpServletResponse response, String token) {
         Delegator delegator = (Delegator) request.getAttribute("delegator");
         try {
-            GenericValue userLogin = EntityQuery.use(delegator).from("UserLogin").where("userLoginId", userLoginId).queryOne();
-            if (userLogin != null) {
-                String enabled = userLogin.getString("enabled");
-                if (enabled == null || "Y".equals(enabled)) {
-                    userLogin.set("hasLoggedOut", "N");
-                    userLogin.store();
+    			String secret = EntityUtilProperties.getPropertyValue("security", "jwt.secret", delegator);
+    			String issuer = EntityUtilProperties.getPropertyValue("security", "jwt.issuer", delegator);
 
-                    // login the user
-                    Map<String, Object> ulSessionMap = LoginWorker.getUserLoginSession(userLogin);
-                    return doMainLogin(request, response, userLogin, ulSessionMap); // doing the main login
-                }
-            }
+    			    Algorithm algorithm = Algorithm.HMAC256(secret);
+    			    JWTVerifier verifier = JWT.require(algorithm)
+    			        .withIssuer(issuer)
+    			        .build(); //Reusable verifier instance
+    			    DecodedJWT jwt = verifier.verify(token);
+    			    
+    	            GenericValue userLogin = EntityQuery.use(delegator).from("UserLogin").where("userLoginId", jwt.getSubject()).queryOne();
+    	            if (userLogin != null) {
+    	                String enabled = userLogin.getString("enabled");
+    	                if (enabled == null || "Y".equals(enabled)) {
+    	                    userLogin.set("hasLoggedOut", "N");
+    	                    userLogin.store();
+
+    	                    // login the user
+    	                    Map<String, Object> ulSessionMap = LoginWorker.getUserLoginSession(userLogin);
+    	                    return doMainLogin(request, response, userLogin, ulSessionMap); // doing the main login
+    	                }
+    	            }
+		} catch (JWTVerificationException exception){
+		    //Invalid signature/claims
+			Debug.logError(exception, module);
+
         } catch (GeneralException e) {
             Debug.logError(e, module);
         }

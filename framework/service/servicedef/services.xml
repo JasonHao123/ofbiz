@@ -95,6 +95,7 @@ under the License.
         <attribute name="isServiceAuth" type="Boolean" mode="IN" optional="true"/>
         <attribute name="userLogin" type="org.apache.ofbiz.entity.GenericValue" mode="OUT"/>
         <attribute name="userLoginSession" type="java.util.Map" mode="OUT" optional="true"/>
+        <attribute name="token" type="String" mode="OUT" optional="true"/>
     </service>
 
     <service name="serviceStreamInterface" engine="interface">

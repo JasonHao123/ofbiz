@@ -20,6 +20,8 @@
 package org.apache.ofbiz.common.login;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -59,11 +61,15 @@ import org.apache.ofbiz.service.ModelService;
 import org.apache.ofbiz.service.ServiceUtil;
 import org.apache.ofbiz.webapp.control.LoginWorker;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+
 /**
  * <b>Title:</b> Login Services
  */
 public class LoginServices {
-
+	private static Calendar calendar = Calendar.getInstance();
     public static final String module = LoginServices.class.getName();
     public static final String resource = "SecurityextUiLabels";
 
@@ -239,6 +245,7 @@ public class LoginServices {
                             }
 
                             result.put("userLogin", userLogin);
+                            result.put("token", generateJWTToken(username,delegator));
                             result.put(ModelService.RESPONSE_MESSAGE, ModelService.RESPOND_SUCCESS);
                         } else {
                             // password is incorrect, but this may be the result of a stale cache entry,
@@ -402,6 +409,7 @@ public class LoginServices {
                         userLogin.set("enabled", "Y");
                         userLogin.set("hasLoggedOut", "N");
                         result.put("userLogin", userLogin);
+                        result.put("token", generateJWTToken(username,delegator));
                         result.put(ModelService.RESPONSE_MESSAGE, ModelService.RESPOND_SUCCESS);
                         //TODO: more than this is needed to support 100% external authentication
                         //TODO: party + security information is needed; Userlogin will need to be stored
@@ -421,7 +429,27 @@ public class LoginServices {
         return result;
     }
 
-    public static void createUserLoginPasswordHistory(Delegator delegator,String userLoginId, String currentPassword) throws GenericEntityException{
+    private static String generateJWTToken(String username, Delegator delegator) {
+	    	try {
+	    		String secret = EntityUtilProperties.getPropertyValue("security", "jwt.secret", delegator);
+	    		String issuer = EntityUtilProperties.getPropertyValue("security", "jwt.issuer", delegator);
+	    		calendar.setTime(new Date());
+	    		calendar.add(Calendar.DATE, 1);
+	    	    Algorithm algorithm = Algorithm.HMAC256(secret);
+	    	    String token = JWT.create()
+	    	        .withIssuer(issuer)
+	    	        .withSubject(username)
+	    	        .withExpiresAt(calendar.getTime())
+	    	        .sign(algorithm);
+	    	    return token;
+	    	} catch (JWTCreationException exception){
+	    	    //Invalid Signing configuration / Couldn't convert Claims.
+	    		exception.printStackTrace();
+	    	}
+	    	return null;
+	}
+
+	public static void createUserLoginPasswordHistory(Delegator delegator,String userLoginId, String currentPassword) throws GenericEntityException{
         int passwordChangeHistoryLimit = 0;
         try {
             passwordChangeHistoryLimit = EntityUtilProperties.getPropertyAsInteger("security", "password.change.history.limit", 0).intValue();

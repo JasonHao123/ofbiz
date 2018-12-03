@@ -785,7 +785,7 @@ under the License.
     </service>
 
     <!-- order lookup services -->
-    <service name="findOrders" engine="java" transaction-timeout="300" auth="true"
+    <service name="findOrders" engine="java" export="true" transaction-timeout="300" auth="true"
             location="org.apache.ofbiz.order.order.OrderLookupServices" invoke="findOrders">
         <description>Uses dynamic view entity to find orders; returns a list of Order (OrderHeader) objects</description>
         <!-- order header fields -->

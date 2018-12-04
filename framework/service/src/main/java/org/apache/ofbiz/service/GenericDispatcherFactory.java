@@ -18,6 +18,7 @@
  *******************************************************************************/
 package org.apache.ofbiz.service;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.ofbiz.base.util.Debug;
@@ -27,7 +28,7 @@ import org.apache.ofbiz.entity.Delegator;
 /**
  * A default {@link LocalDispatcherFactory} implementation.
  */
-public class GenericDispatcherFactory implements LocalDispatcherFactory {
+public class GenericDispatcherFactory implements LocalDispatcherFactory,Serializable {
 
     protected static boolean ecasDisabled = false;
 
@@ -46,7 +47,7 @@ public class GenericDispatcherFactory implements LocalDispatcherFactory {
     }
 
     // The default LocalDispatcher implementation.
-    private class GenericDispatcher extends GenericAbstractDispatcher {
+    private class GenericDispatcher extends GenericAbstractDispatcher implements Serializable{
 
         private GenericDispatcher(String name, Delegator delegator) {
             ClassLoader loader;

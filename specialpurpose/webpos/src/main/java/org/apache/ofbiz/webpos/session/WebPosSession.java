@@ -18,6 +18,7 @@
  *******************************************************************************/
 package org.apache.ofbiz.webpos.session;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -38,7 +39,7 @@ import org.apache.ofbiz.service.ServiceUtil;
 import org.apache.ofbiz.webapp.control.LoginWorker;
 import org.apache.ofbiz.webpos.transaction.WebPosTransaction;
 
-public class WebPosSession {
+public class WebPosSession implements Serializable{
 
     public static final String module = WebPosSession.class.getName();
 

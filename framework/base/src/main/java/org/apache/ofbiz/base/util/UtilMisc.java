@@ -218,9 +218,12 @@ public final class UtilMisc {
             if (entryValue != null && !(entryValue instanceof Serializable)) {
                 keysToRemove.add(mapEntry.getKey());
                 //Debug.logInfo("Found Map value that is not Serializable: " + mapEntry.getKey() + "=" + mapEntry.getValue(), module);
+            }else if(entryValue instanceof Map) {
+            		makeMapSerializable((Map<String, V>) entryValue);
             }
         }
         for (String keyToRemove: keysToRemove) { map.remove(keyToRemove); }
+        
     }
 
     /**

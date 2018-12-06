@@ -22,9 +22,14 @@ under the License.
 <#else>
   <#assign shoppingCartSize = 0>
 </#if>
-<div id="microcart">
-  <#if (shoppingCartSize > 0)>
+<div id="microcart" class="dropdown d-md-flex">
+         
+
+       
+                  <a class="nav-link icon" data-toggle="dropdown">
+        <#if (shoppingCartSize > 0)>
     <p id="microCartNotEmpty">
+    
       ${uiLabelMap.EcommerceCartHas}
       <strong id="microCartQuantity">
         ${shoppingCart.getTotalQuantity()}
@@ -40,44 +45,34 @@ under the License.
     </p>
     <span id="microCartEmpty" style="display:none">${uiLabelMap.OrderShoppingCartEmpty}</span>
   <#else>
-    <p>${uiLabelMap.OrderShoppingCartEmpty}</p>
-  </#if>
-  <ul>
-    <li>
-      <a href="<@ofbizUrl>view/showcart</@ofbizUrl>">[${uiLabelMap.OrderViewCart}]</a>
-    </li>
-    <#if (shoppingCartSize > 0)>
-      <#if !initialLocaleComplete?? || initialLocaleComplete?length == 2 >
-        <#if initialLocaleComplete?? && initialLocaleComplete?length == 2  && initialLocaleComplete == "fr">
-          <#assign initialLocaleComplete = "fr_FR"><#-- same idea can be used with other default locale -->
-        <#else>
-          <#assign initialLocaleComplete = "en_US">
-        </#if>
-      </#if>
-      <li id="quickCheckoutEnabled">
-        <a href="<@ofbizUrl>quickcheckout</@ofbizUrl>">[${uiLabelMap.OrderCheckoutQuick}]</a>
-      </li>
-      <li id="quickCheckoutDisabled" style="display:none" class="disabled">
-        [${uiLabelMap.OrderCheckoutQuick}]
-      </li>
-      <li id="onePageCheckoutEnabled">
-        <a href="<@ofbizUrl>onePageCheckout</@ofbizUrl>">[${uiLabelMap.EcommerceOnePageCheckout}]</a>
-      </li>
-      <li id="onePageCheckoutDisabled" style="display:none" class="disabled">
-        [${uiLabelMap.EcommerceOnePageCheckout}]
-      </li>
-      <#if shoppingCart?has_content && (shoppingCart.getGrandTotal() > 0)>
-        <li id="microCartPayPalCheckout">
-          <a href="<@ofbizUrl>setPayPalCheckout</@ofbizUrl>">
-            <img src="https://www.paypal.com/${initialLocaleComplete}/i/btn/btn_xpressCheckout.gif"
-                alt="[PayPal Express Checkout]"
-                onError="this.onerror=null;this.src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif'"/>
-          </a>
-        </li>
-      </#if>
-    <#else>
-      <li class="disabled">[${uiLabelMap.OrderCheckoutQuick}]</li>
-      <li class="disabled">[${uiLabelMap.EcommerceOnePageCheckout}]</li>
-    </#if>
-  </ul>
-</div>
+    
+  </#if>  
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                    <a href="#" class="dropdown-item d-flex">
+                      <span class="avatar mr-3 align-self-center" style="background-image: url(/images/demo/faces/male/41.jpg)"></span>
+                      <div>
+                        <strong>Nathan</strong> pushed new commit: Fix page load performance issue.
+                        <div class="small text-muted">10 minutes ago</div>
+                      </div>
+                    </a>
+                    <a href="#" class="dropdown-item d-flex">
+                      <span class="avatar mr-3 align-self-center" style="background-image: url(/images/demo/faces/female/1.jpg)"></span>
+                      <div>
+                        <strong>Alice</strong> started new task: Tabler UI design.
+                        <div class="small text-muted">1 hour ago</div>
+                      </div>
+                    </a>
+                    <a href="#" class="dropdown-item d-flex">
+                      <span class="avatar mr-3 align-self-center" style="background-image: url(/images/demo/faces/female/18.jpg)"></span>
+                      <div>
+                        <strong>Rose</strong> deployed new version of NodeJS REST Api V3
+                        <div class="small text-muted">2 hours ago</div>
+                      </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="<@ofbizUrl>view/showcart</@ofbizUrl>" class="dropdown-item text-center text-muted-dark">${uiLabelMap.OrderViewCart}</a>
+                  </div>
+        
+                </div>
+

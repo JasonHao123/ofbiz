@@ -1021,7 +1021,7 @@ $(function(){
     <#assign productValue = product />
     <#assign listIndex = 1 />
     ${setRequestAttribute("productValue", productValue)}
-    <div id="associated-products">
+    <div id="associated-products col-lg-9">
     <#-- also bought -->
       <@associated assocProducts=alsoBoughtProducts beforeName="" showName="N"
           afterName="${uiLabelMap.ProductAlsoBought}" formNamePrefix="albt" targetRequestName="" />
@@ -1092,7 +1092,7 @@ $(function(){
       <input type="hidden" name="keywordTypeId" value="KWT_TAG"/>
       <input type="hidden" name="statusId" value="KW_APPROVED"/>
       <input type="hidden" name="clearSearch" value="Y"/>
-      <input type="hidden" name="VIEW_SIZE" value="10"/>
+      <input type="hidden" name="VIEW_SIZE" value="12"/>
       <input type="hidden" name="PAGING" value="Y"/>
       <input type="hidden" name="SEARCH_STRING" id="productTagStr"/>
     </form>

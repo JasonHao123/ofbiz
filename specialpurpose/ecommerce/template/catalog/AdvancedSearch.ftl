@@ -23,7 +23,7 @@ under the License.
 <h2>${uiLabelMap.ProductAdvancedSearchInCategory}</h2>
 <form id="advtokeywordsearchform" method="post" action="<@ofbizUrl>keywordsearch</@ofbizUrl>">
   <fieldset class="inline">
-    <input type="hidden" name="VIEW_SIZE" value="10"/>
+    <input type="hidden" name="VIEW_SIZE" value="12"/>
     <input type="hidden" name="PAGING" value="Y"/>
     <input type="hidden" name="SEARCH_CATALOG_ID" value="${currentCatalogId}"/>
   <#if searchCategory?has_content>

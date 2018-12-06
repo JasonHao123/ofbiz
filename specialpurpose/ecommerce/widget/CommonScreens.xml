@@ -43,12 +43,17 @@ under the License.
                 <set field="initialLocaleComplete" type="String" value="${groovy:parameters?.userLogin?.lastLocale}" default-value="${groovy:locale.toString()}"/>
                 <set field="layoutSettings.javaScripts[+0]" value="${groovy: org.apache.ofbiz.common.JsLanguageFilesMapping.dateTime.getFilePath(initialLocaleComplete)}" global="true"/>
 
+                <set field="layoutSettings.styleSheets[+0]" value="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" global="true" />
+                <set field="layoutSettings.styleSheets[+0]" value="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext" global="true" />
+                <set field="layoutSettings.styleSheets[+0]" value="/images/assets/css/dashboard.css" global="true" />
+                <set field="layoutSettings.javaScripts[+0]" value="/images/assets/js/dashboard.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/plugins/datetimepicker/jquery-ui-timepicker-addon.min-1.4.3.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/ui/js/jquery-ui-1.10.3.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/plugins/validate/jquery.validate.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-migrate-1.2.1.js" global="true"/>
-                <set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.11.0.min.js" global="true"/>
-                <set field="layoutSettings.javaScripts[]" value="/images/jquery/plugins/Readmore.js-master/readmore.js" global="true"/>
+				<set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.11.0.min.js" global="true"/>
+				<set field="layoutSettings.javaScripts[]" value="/images/jquery/plugins/Readmore.js-master/readmore.js" global="true"/>
+				<set field="layoutSettings.javaScripts[+0]" value="/images/assets/js/require.min.js" global="true"/>
                 <set field="layoutSettings.javaScripts[]" value="/images/jquery/plugins/jquery-jgrowl/1.4.1/jquery.jgrowl.min.js" global="true"/>
                 <set field="layoutSettings.styleSheets[+0]" value="/images/jquery/plugins/jquery-jgrowl/1.4.1/jquery.jgrowl.min.css" global="true" />
 
@@ -60,13 +65,13 @@ under the License.
                     <field-map field-name="visualThemeId"/>
                     <field-map field-name="themeResources" from-field="layoutSettings"/>
                 </service>
-                <set field="layoutSettings" from-field="themeResources" default-value="${layoutSettings}" global="true"/>
+                <set field="layoutSettings" from-field="themeResources" default-value="${layoutSettings}" global="true"/> 
                 <set field="headerTemplateLocation" from-field="layoutSettings.VT_HDR_TMPLT_LOC[0]" default-value="component://ecommerce/template/includes/Header.ftl"/>
                 <set field="footerTemplateLocation" from-field="layoutSettings.VT_FTR_TMPLT_LOC[0]" default-value="component://ecommerce/template/includes/Footer.ftl"/>
                 <entity-and entity-name="WebAnalyticsConfig" list="webAnalyticsConfigs">
                     <field-map field-name="webSiteId"/>
                 </entity-and>
-                <set field="layoutSettings.javaScripts[]" value="/images/miscAjaxFunctions.js" global="true" />
+
             </actions>
             <widgets>
                <section>
@@ -75,16 +80,16 @@ under the License.
                   </condition>
                   <widgets>
                      <platform-specific><html><html-template location="component://ecommerce/template/includes/HeaderHead.ftl"/></html></platform-specific>
-                     <platform-specific><html><html-template location="component://common/template/includes/OpenHtmlBody.ftl"/></html></platform-specific>
+                     <platform-specific><html><html-template location="component://ecommerce/template/includes/OpenHtmlBody.ftl"/></html></platform-specific>
                      <!-- render header -->
                      <container id="header"><platform-specific><html><html-template location="${headerTemplateLocation}"/></html></platform-specific></container>
 
-                     <container id="ecom-mainarea">
+                     <container id="ecom-mainarea" style="row row-cards">
                         <!-- by default will render left-bar only if left/rightbarScreenName value not empty -->
-                        <container id="div1" style="left"><include-screen name="${leftbarScreenName}" location="${leftbarScreenLocation}"/></container>
-                        <container id="div2" style="right"><include-screen name="${rightbarScreenName}" location="${rightbarScreenLocation}"/></container>
-
-                        <container id="div3" style="${MainColumnStyle}">
+<!--                         <container id="div1" style="col-lg-3 d-none d-md-flex"><include-screen name="${leftbarScreenName}" location="${leftbarScreenLocation}"/></container> -->
+<!--                         <container id="div2" style="right"><include-screen name="${rightbarScreenName}" location="${rightbarScreenLocation}"/></container>
+ -->
+                        <container id="div3" style="col-lg-12 px-3">
                            <!-- render messages -->
                            <platform-specific><html><html-template location="component://common/template/includes/Messages.ftl"/></html></platform-specific>
                            <decorator-section-include name="body"/>
@@ -92,10 +97,10 @@ under the License.
 
                         <container id="div4" style="endcolumns"/>
                     </container>
-
+					<platform-specific><html><html-template location="component://ecommerce/template/includes/CloseHtmlBody.ftl"/></html></platform-specific>
                     <!-- render footer -->
                     <container id="footer"><platform-specific><html><html-template location="${footerTemplateLocation}"/></html></platform-specific></container>
-                    <platform-specific><html><html-template location="component://common/template/includes/CloseHtmlBody.ftl"/></html></platform-specific>
+                    
                   </widgets>
                   <fail-widgets>
                      <label text="A Product Store has not been defined for this ecommerce site.  A Product Store can be created using the ofbizsetup wizard."/>
@@ -109,10 +114,10 @@ under the License.
     <screen name="leftbar">
         <section>
             <widgets>
-                    <include-screen name="choosecatalog" location="component://ecommerce/widget/CatalogScreens.xml"/>
-                    <include-screen name="keywordsearchbox" location="component://ecommerce/widget/CatalogScreens.xml"/>
+<!--                     <include-screen name="choosecatalog" location="component://ecommerce/widget/CatalogScreens.xml"/>
+                    <include-screen name="keywordsearchbox" location="component://ecommerce/widget/CatalogScreens.xml"/> -->
                     <!--include-screen name="sidedeepcategory" location="component://ecommerce/widget/CatalogScreens.xml"/-->
-                    <include-screen name="productCategories" location="component://ecommerce/widget/CatalogScreens.xml"/>
+<!--                     <include-screen name="productCategories" location="component://ecommerce/widget/CatalogScreens.xml"/> -->
                     <include-screen name="LayeredNavBar" location="component://ecommerce/widget/CatalogScreens.xml"/>
                     <include-screen name="minireorderprods" location="component://ecommerce/widget/CatalogScreens.xml"/>
                     <include-screen name="signupforcontactlist" location="component://ecommerce/widget/EmailContactListScreens.xml"/>
@@ -126,7 +131,7 @@ under the License.
     <screen name="rightbar">
         <section>
             <widgets>
-                    <include-screen name="language"/>
+              <!--       <include-screen name="language"/> -->
                     <include-screen name="minicart" location="component://ecommerce/widget/CartScreens.xml"/>
                     <include-screen name="compareproductslist" location="component://order/widget/ordermgr/OrderEntryCatalogScreens.xml"/>
                     <include-screen name="minipromotext" location="component://ecommerce/widget/CartScreens.xml"/>

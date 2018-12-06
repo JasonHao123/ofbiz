@@ -251,13 +251,13 @@ under the License.
                       </#if>
                       <#assign smallImageUrl =
                           Static["org.apache.ofbiz.product.product.ProductContentWrapper"].getProductContentAsText(
-                          cartLine.getProduct(), "SMALL_IMAGE_URL", locale, dispatcher, "url")! />
+                          cartLine.getProduct(), "SMALL_IMAGE_URL", locale, dispatcher, "string")! />
                       <#if !smallImageUrl?string?has_content>
                         <#assign smallImageUrl = "/images/defaultImage.jpg" />
                       </#if>
                       <#if smallImageUrl?string?has_content>
                         <a href="<@ofbizCatalogAltUrl productId=parentProductId/>">
-                          <img src="<@ofbizContentUrl>${requestAttributes.contentPathPrefix!}${smallImageUrl}</@ofbizContentUrl>"
+                          <img src="<@ofbizContentUrl>${requestAttributes.contentPathPrefix!}${smallImageUrl!}</@ofbizContentUrl>"
                               alt="Product Image" class="imageborder" />
                         </a>
                       </#if>
@@ -625,14 +625,14 @@ under the License.
     <div>
       <h2>${uiLabelMap.EcommerceYouMightAlsoIntrested}:</h2>
     </div>
-    <div>
+    <div class="row">
       <#-- random complementary products -->
       <#list associatedProducts as assocProduct>
-        <div>
+        
           ${setRequestAttribute("optProduct", assocProduct)}
           ${setRequestAttribute("listIndex", assocProduct_index)}
           ${screens.render("component://ecommerce/widget/CatalogScreens.xml#productsummary")}
-        </div>
+      
       </#list>
     </div>
   </div>

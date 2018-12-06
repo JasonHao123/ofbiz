@@ -131,9 +131,9 @@ under the License.
       <#if categoryImageUrl?string?has_content>
         style="position: relative; margin-top: ${height}px;"
       </#if>
-      class="productsummary-container<#if (numCol?int > 1)> matrix</#if>">
+      class="productsummary-container row<#if (numCol?int > 1)> matrix</#if>">
       <#if (numCol?int > 1)>
-        <table>
+        
       </#if>
         <#list productCategoryMembers as productCategoryMember>
           <#if (numCol?int == 1)>
@@ -142,19 +142,19 @@ under the License.
             ${setRequestAttribute("listIndex", productCategoryMember_index)}
             ${screens.render(productsummaryScreen)}
           <#else>
-              <#if (tabCol?int = 1)><tr></#if>
-                  <td>
+              <#if (tabCol?int = 1)></#if>
+                  
                       ${setRequestAttribute("optProductId", productCategoryMember.productId)}
                       ${setRequestAttribute("productCategoryMember", productCategoryMember)}
                       ${setRequestAttribute("listIndex", productCategoryMember_index)}
                       ${screens.render(productsummaryScreen)}
-                  </td>
-              <#if (tabCol?int = numCol)></tr></#if>
+                  
+              <#if (tabCol?int = numCol)></#if>
               <#assign tabCol = tabCol+1><#if (tabCol?int > numCol)><#assign tabCol = 1></#if>
            </#if>
         </#list>
       <#if (numCol?int > 1)>
-        </table>
+        
       </#if>
       </div>
     <#if paginateEcommerceStyle??>

@@ -141,7 +141,7 @@ public class CatalinaContainer implements Container {
     public static final String J2EE_APP = "OFBiz";
     public static final String module = CatalinaContainer.class.getName();
     private static final ThreadGroup CATALINA_THREAD_GROUP = new ThreadGroup("CatalinaContainer");
-    private static RedissonClient client;
+    private static RedissonSessionManager manager;
 
     // load the JSSE properties (set the trust store)
     static {
@@ -585,12 +585,11 @@ public class CatalinaContainer implements Container {
 
         context.setDistributable(contextIsDistributable);
         if(redisSessionReplication) {
-	    		RedissonSessionManager manager = new RedissonSessionManager();
+	    		manager = new RedissonSessionManager();
 	    		manager.setConfigPath(System.getProperty("ofbiz.home") + "/framework/catalina/config/redisson.yaml" );
 	    		manager.setReadMode("MEMORY");
 	    		manager.setUpdateMode("DEFAULT");
         		context.setManager(manager);
-        		client = manager.getRedisson();
         }
         context.setCrossContext(crossContext);
         context.setPrivileged(appInfo.privileged);
@@ -680,6 +679,6 @@ public class CatalinaContainer implements Container {
     }
     
     public static RedissonClient getClient() {
-    		return client;
+    		return manager.getRedisson();
     }
 }

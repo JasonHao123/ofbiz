@@ -334,7 +334,7 @@ $(function(){
   </#if>
 </#macro>
 
-<div id="productdetail">
+<div id="productdetail" class="col-lg-9">
   <#assign productAdditionalImage1 = productContentWrapper.get("ADDITIONAL_IMAGE_1", "url")! />
   <#assign productAdditionalImage2 = productContentWrapper.get("ADDITIONAL_IMAGE_2", "url")! />
   <#assign productAdditionalImage3 = productContentWrapper.get("ADDITIONAL_IMAGE_3", "url")! />
@@ -969,8 +969,8 @@ $(function(){
         <a href="<@ofbizUrl>reviewProduct?category_id=${categoryId!}&amp;product_id=${product.productId}</@ofbizUrl>"
            class="linktext">${uiLabelMap.ProductBeTheFirstToReviewThisProduct}</a>
       </div>
-    </div>
     </#if>
+    </div>
     <#-- Upgrades/Up-Sell/Cross-Sell -->
     <#macro associated assocProducts beforeName showName afterName formNamePrefix targetRequestName>
       <#assign pageProduct = product />
@@ -979,27 +979,15 @@ $(function(){
         <#assign targetRequest = targetRequestName />
       </#if>
       <#if assocProducts?has_content>
-        <h2>
-          ${beforeName!}
-          <#if showName == "Y">${productContentWrapper.get("PRODUCT_NAME", "html")!}</#if>${afterName!}
-        </h2>
 
-        <div class="productsummary-container">
+ 
           <#list assocProducts as productAssoc>
             <#if productAssoc.productId == product.productId>
               <#assign assocProductId = productAssoc.productIdTo />
             <#else>
               <#assign assocProductId = productAssoc.productId />
             </#if>
-            <div>
-              <a href="<@ofbizUrl>${targetRequest}/<#if categoryId??>~category_id=${categoryId}/</#if>~product_id=${assocProductId}</@ofbizUrl>"
-                 class="buttontext">
-              ${assocProductId}
-              </a>
-              <#if productAssoc.reason?has_content>
-                - <strong>${productAssoc.reason}</strong>
-              </#if>
-            </div>
+            
           ${setRequestAttribute("optProductId", assocProductId)}
           ${setRequestAttribute("listIndex", listIndex)}
           ${setRequestAttribute("formNamePrefix", formNamePrefix)}
@@ -1010,8 +998,7 @@ $(function(){
             <#assign product = pageProduct />
             <#local listIndex = listIndex + 1 />
           </#list>
-        </div>
-
+     
       ${setRequestAttribute("optProductId", "")}
       ${setRequestAttribute("formNamePrefix", "")}
       ${setRequestAttribute("targetRequestName", "")}
@@ -1021,7 +1008,7 @@ $(function(){
     <#assign productValue = product />
     <#assign listIndex = 1 />
     ${setRequestAttribute("productValue", productValue)}
-    <div id="associated-products col-lg-9">
+    <div id="associated-products" class="productsummary-container row matrix">
     <#-- also bought -->
       <@associated assocProducts=alsoBoughtProducts beforeName="" showName="N"
           afterName="${uiLabelMap.ProductAlsoBought}" formNamePrefix="albt" targetRequestName="" />

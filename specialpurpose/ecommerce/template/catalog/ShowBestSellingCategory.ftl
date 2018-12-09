@@ -103,49 +103,19 @@ under the License.
 </#if>
 -->
 
-
+<#if (promoToShow>0)>
                     <div id="carousel-captions" class="carousel slide col-lg-12 py-3" data-ride="carousel">
                       <div class="carousel-inner">
-                        <div class="carousel-item active">
-                          <img class="d-block" alt="" src="/images/demo/photos/david-marcu-114194-1500.jpg" data-holder-rendered="true">
-                          <div class="carousel-item-background d-none d-md-block"></div>
+                       <#list  0..productPromos?size-1 as i>
+                        <div class="carousel-item <#if (i==0) >active</#if>">
+                          <img class="d-block" alt="" src="${productPromoImageMap.get(productPromos[i].productPromoId)}" data-holder-rendered="true">
                           <div class="carousel-caption d-none d-md-block">
-                            <h3>Slide label</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            <h3> <a href="<@ofbizUrl>showPromotionDetails?productPromoId=${productPromos[i].productPromoId}</@ofbizUrl>">${StringUtil.wrapString(productPromos[i].promoName!)}</a></h3>
+                            <p> <a href="<@ofbizUrl>showPromotionDetails?productPromoId=${productPromos[i].productPromoId}</@ofbizUrl>">${StringUtil.wrapString(productPromos[i].promoText!)}</a></p>
                           </div>
                         </div>
-                        <div class="carousel-item">
-                          <img class="d-block" alt="" src="/images/demo/photos/davide-cantelli-139887-1500.jpg" data-holder-rendered="true">
-                          <div class="carousel-item-background d-none d-md-block"></div>
-                          <div class="carousel-caption d-none d-md-block">
-                            <h3>Slide label</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                          </div>
-                        </div>
-                        <div class="carousel-item">
-                          <img class="d-block" alt="" src="/images/demo/photos/dino-reichmuth-84359-1500.jpg" data-holder-rendered="true">
-                          <div class="carousel-item-background d-none d-md-block"></div>
-                          <div class="carousel-caption d-none d-md-block">
-                            <h3>Slide label</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                          </div>
-                        </div>
-                        <div class="carousel-item">
-                          <img class="d-block" alt="" src="/images/demo/photos/eberhard-grossgasteiger-311213-1500.jpg" data-holder-rendered="true">
-                          <div class="carousel-item-background d-none d-md-block"></div>
-                          <div class="carousel-caption d-none d-md-block">
-                            <h3>Slide label</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                          </div>
-                        </div>
-                        <div class="carousel-item">
-                          <img class="d-block" alt="" src="/images/demo/photos/geran-de-klerk-290418-1500.jpg" data-holder-rendered="true">
-                          <div class="carousel-item-background d-none d-md-block"></div>
-                          <div class="carousel-caption d-none d-md-block">
-                            <h3>Slide label</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                          </div>
-                        </div>
+                        </#list>
+                        
                       </div>
                       <a class="carousel-control-prev" href="#carousel-captions" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -157,4 +127,4 @@ under the License.
                       </a>
                     </div>
                   </div>
-
+</#if>

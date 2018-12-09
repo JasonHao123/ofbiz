@@ -166,4 +166,18 @@ under the License.
             <key-map field-name="tenantId"/>
         </relation>
     </entity>
+    <entity entity-name="TenantLicense" package-name="org.apache.ofbiz.entity.tenant" 
+            title="Tenant and its License">
+        <field name="tenantId" type="id-ne"></field>
+        <field name="licenseType" type="id-vlong-ne"></field>
+		<field name="fromDate" type="date-time"/>
+        <field name="thruDate" type="date-time"/>
+        <prim-key field="tenantId"/>
+        <prim-key field="licenseType"/>
+        <prim-key field="fromDate"/>
+        <relation type="one" fk-name="TNNT_LICENSE" rel-entity-name="Tenant">
+            <key-map field-name="tenantId"/>
+        </relation>
+    </entity>
+    
 </entitymodel>

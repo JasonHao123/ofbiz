@@ -59,12 +59,6 @@ import org.apache.catalina.tribes.transport.nio.NioReceiver;
 import org.apache.catalina.util.ServerInfo;
 import org.apache.catalina.valves.AccessLogValve;
 import org.apache.catalina.webresources.StandardRoot;
-import org.apache.tomcat.JarScanner;
-import org.apache.tomcat.util.IntrospectionUtils;
-import org.apache.tomcat.util.descriptor.web.FilterDef;
-import org.apache.tomcat.util.descriptor.web.FilterMap;
-import org.apache.tomcat.util.scan.StandardJarScanner;
-import org.redisson.tomcat.RedissonSessionManager;
 import org.apache.ofbiz.base.component.ComponentConfig;
 import org.apache.ofbiz.base.concurrent.ExecutionPool;
 import org.apache.ofbiz.base.container.Container;
@@ -78,6 +72,13 @@ import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.SSLUtil;
 import org.apache.ofbiz.base.util.UtilValidate;
 import org.apache.ofbiz.base.util.UtilXml;
+import org.apache.tomcat.JarScanner;
+import org.apache.tomcat.util.IntrospectionUtils;
+import org.apache.tomcat.util.descriptor.web.FilterDef;
+import org.apache.tomcat.util.descriptor.web.FilterMap;
+import org.apache.tomcat.util.scan.StandardJarScanner;
+import org.redisson.api.RedissonClient;
+import org.redisson.tomcat.RedissonSessionManager;
 import org.w3c.dom.Document;
 
 /*
@@ -140,6 +141,7 @@ public class CatalinaContainer implements Container {
     public static final String J2EE_APP = "OFBiz";
     public static final String module = CatalinaContainer.class.getName();
     private static final ThreadGroup CATALINA_THREAD_GROUP = new ThreadGroup("CatalinaContainer");
+    private static RedissonClient client;
 
     // load the JSSE properties (set the trust store)
     static {
@@ -588,6 +590,7 @@ public class CatalinaContainer implements Container {
 	    		manager.setReadMode("MEMORY");
 	    		manager.setUpdateMode("DEFAULT");
         		context.setManager(manager);
+        		client = manager.getRedisson();
         }
         context.setCrossContext(crossContext);
         context.setPrivileged(appInfo.privileged);
@@ -674,5 +677,9 @@ public class CatalinaContainer implements Container {
 
     public String getName() {
         return name;
+    }
+    
+    public static RedissonClient getClient() {
+    		return client;
     }
 }

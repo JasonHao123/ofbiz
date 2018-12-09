@@ -509,7 +509,8 @@ under the License.
     <screen name="showBestSellingCategory">
         <section>
             <actions>
-                <script location="component://ecommerce/groovyScripts/catalog/BestSellingCategory.groovy"/>
+                <!-- <script location="component://ecommerce/groovyScripts/catalog/BestSellingCategory.groovy"/> -->
+                <script location="component://ecommerce/groovyScripts/cart/ShowPromoImage.groovy"/>
             </actions>
             <widgets>
                 <platform-specific><html><html-template location="component://ecommerce/template/catalog/ShowBestSellingCategory.ftl"/></html></platform-specific>

@@ -679,6 +679,9 @@ public class CatalinaContainer implements Container {
     }
     
     public static RedissonClient getClient() {
-    		return manager.getRedisson();
+    		if(manager!=null) {
+    			return manager.getRedisson();
+    		}
+    		return null;
     }
 }

@@ -18,7 +18,8 @@
  *******************************************************************************/
 package org.apache.ofbiz.base.config;
 
-import org.apache.ofbiz.base.concurrent.ConcurrentRedisMap;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.UtilXml;
 import org.w3c.dom.Element;
@@ -31,7 +32,7 @@ public final class JNDIConfigUtil {
 
     public static final String module = JNDIConfigUtil.class.getName();
     private static final String JNDI_CONFIG_XML_FILENAME = "jndiservers.xml";
-    private static final ConcurrentRedisMap<String, JndiServerInfo> jndiServerInfos = new ConcurrentRedisMap<String, JndiServerInfo>("JNDIConfigUtil.jndiServerInfos");
+    private static final ConcurrentHashMap<String, JndiServerInfo> jndiServerInfos = new ConcurrentHashMap<String, JndiServerInfo>();
     private JNDIConfigUtil() {};
 
     private static Element getXmlRootElement() throws GenericConfigException {

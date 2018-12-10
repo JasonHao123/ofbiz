@@ -59,6 +59,9 @@ under the License.
     </Appenders>
     <Loggers>
         <logger name="org.apache" level="warn"/>
+        <logger name="org.redisson" level="warn"/>
+        <logger name="com.atomikos" level="warn"/>
+        <logger name="com.zaxxer.hikari" level="warn"/>
         <logger name="org.apache.ofbiz" level="all"/>
         <logger name="org.apache.ofbiz.base.converter.Converters" level="warn"/>
         <logger name="freemarker" level="warn"/>

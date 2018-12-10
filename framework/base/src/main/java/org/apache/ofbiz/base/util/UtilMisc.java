@@ -223,7 +223,6 @@ public final class UtilMisc {
             }
         }
         for (String keyToRemove: keysToRemove) { map.remove(keyToRemove); }
-        
     }
 
     /**

@@ -28,7 +28,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
 
     <!-- the transaction factory class to use, one is needed for each way of getting JTA interfaces -->
     <!-- Use this one for Geronimo -->
-    <transaction-factory class="org.apache.ofbiz.entity.transaction.GeronimoTransactionFactory"/>
+    <transaction-factory class="org.apache.ofbiz.entity.transaction.AtomikosTransactionFactory"/>
 
     <!-- Use this one for getting the JTA objects from JNDI -->
     <!-- NOTE: to use the JndiFactory you must specify the necessary JNDI properties
@@ -47,19 +47,19 @@ access. For a detailed description see the core/docs/entityconfig.html file.
     -->
 
     <!-- the connection factory class to use, one is needed for obtaining connections/pools for defined resources -->
-    <connection-factory class="org.apache.ofbiz.entity.connection.DBCPConnectionFactory"/>
+    <connection-factory class="org.apache.ofbiz.entity.connection.HikariConnectionFactory"/>
 
     <debug-xa-resources value="false" />  <!-- see https://issues.apache.org/jira/browse/OFBIZ-4282 for more -->
     
     <delegator name="default" entity-model-reader="main" entity-group-reader="main" entity-eca-reader="main" distributed-cache-clear-enabled="false">
-        <group-map group-name="org.apache.ofbiz" datasource-name="localderby"/>
-        <group-map group-name="org.apache.ofbiz.olap" datasource-name="localderbyolap"/>
-        <group-map group-name="org.apache.ofbiz.tenant" datasource-name="localderbytenant"/>
+        <group-map group-name="org.apache.ofbiz" datasource-name="localpostgres"/>
+        <group-map group-name="org.apache.ofbiz.olap" datasource-name="localpostolap"/>
+        <group-map group-name="org.apache.ofbiz.tenant" datasource-name="localposttenant"/>
     </delegator>
     <delegator name="default-no-eca" entity-model-reader="main" entity-group-reader="main" entity-eca-reader="main" entity-eca-enabled="false" distributed-cache-clear-enabled="false">
-        <group-map group-name="org.apache.ofbiz" datasource-name="localderby"/>
-        <group-map group-name="org.apache.ofbiz.olap" datasource-name="localderbyolap"/>
-        <group-map group-name="org.apache.ofbiz.tenant" datasource-name="localderbytenant"/>
+        <group-map group-name="org.apache.ofbiz" datasource-name="localpostgres"/>
+        <group-map group-name="org.apache.ofbiz.olap" datasource-name="localpostolap"/>
+        <group-map group-name="org.apache.ofbiz.tenant" datasource-name="localposttenant"/>
     </delegator>
 
     <!-- be sure that your default delegator (or the one you use) uses the same datasource for test. You must run "gradlew loadDefault" before running "gradlew testIntegration" -->

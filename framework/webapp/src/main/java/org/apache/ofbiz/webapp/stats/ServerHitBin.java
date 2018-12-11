@@ -18,18 +18,19 @@
  *******************************************************************************/
 package org.apache.ofbiz.webapp.stats;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Deque;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ofbiz.base.concurrent.ConcurrentRedisMap;
 import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.UtilHttp;
 import org.apache.ofbiz.base.util.UtilProperties;
 import org.apache.ofbiz.base.util.UtilValidate;
+import org.apache.ofbiz.catalina.container.CatalinaContainer;
 import org.apache.ofbiz.entity.Delegator;
 import org.apache.ofbiz.entity.DelegatorFactory;
 import org.apache.ofbiz.entity.GenericEntityException;
@@ -37,6 +38,8 @@ import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.model.ModelEntity;
 import org.apache.ofbiz.entity.util.EntityQuery;
 import org.apache.ofbiz.entity.util.EntityUtilProperties;
+import org.redisson.RedissonDeque;
+import org.redisson.api.RDeque;
 
 import com.ibm.icu.util.Calendar;
 
@@ -45,7 +48,7 @@ import com.ibm.icu.util.Calendar;
  * <p>Handles total stats since the server started and binned
  *  stats according to settings in the serverstats.properties file.
  */
-public class ServerHitBin {
+public class ServerHitBin implements Serializable{
     // Debug module name
     public static final String module = ServerHitBin.class.getName();
 
@@ -58,18 +61,18 @@ public class ServerHitBin {
     private static final String[] typeIds = {"", "REQUEST", "EVENT", "VIEW", "ENTITY", "SERVICE"};
 
     // these Maps contain Lists of ServerHitBin objects by id, the most recent is first in the list
-    public static final ConcurrentMap<String, Deque<ServerHitBin>> requestHistory = new ConcurrentHashMap<String, Deque<ServerHitBin>>();
-    public static final ConcurrentMap<String, Deque<ServerHitBin>> eventHistory = new ConcurrentHashMap<String, Deque<ServerHitBin>>();
-    public static final ConcurrentMap<String, Deque<ServerHitBin>> viewHistory = new ConcurrentHashMap<String, Deque<ServerHitBin>>();
-    public static final ConcurrentMap<String, Deque<ServerHitBin>> entityHistory = new ConcurrentHashMap<String, Deque<ServerHitBin>>();
-    public static final ConcurrentMap<String, Deque<ServerHitBin>> serviceHistory = new ConcurrentHashMap<String, Deque<ServerHitBin>>();
+    public static final ConcurrentMap<String, RDeque<ServerHitBin>> requestHistory = new ConcurrentRedisMap<String, RDeque<ServerHitBin>>("ServerHitBin.requestHistory");
+    public static final ConcurrentMap<String, RDeque<ServerHitBin>> eventHistory = new ConcurrentRedisMap<String, RDeque<ServerHitBin>>("ServerHitBin.eventHistory");
+    public static final ConcurrentMap<String, RDeque<ServerHitBin>> viewHistory = new ConcurrentRedisMap<String, RDeque<ServerHitBin>>("ServerHitBin.viewHistory");
+    public static final ConcurrentMap<String, RDeque<ServerHitBin>> entityHistory = new ConcurrentRedisMap<String, RDeque<ServerHitBin>>("ServerHitBin.entityHistory");
+    public static final ConcurrentMap<String, RDeque<ServerHitBin>> serviceHistory = new ConcurrentRedisMap<String, RDeque<ServerHitBin>>("ServerHitBin.serviceHistory");
 
     // these Maps contain ServerHitBin objects by id
-    public static final ConcurrentMap<String, ServerHitBin> requestSinceStarted = new ConcurrentHashMap<String, ServerHitBin>();
-    public static final ConcurrentMap<String, ServerHitBin> eventSinceStarted = new ConcurrentHashMap<String, ServerHitBin>();
-    public static final ConcurrentMap<String, ServerHitBin> viewSinceStarted = new ConcurrentHashMap<String, ServerHitBin>();
-    public static final ConcurrentMap<String, ServerHitBin> entitySinceStarted = new ConcurrentHashMap<String, ServerHitBin>();
-    public static final ConcurrentMap<String, ServerHitBin> serviceSinceStarted = new ConcurrentHashMap<String, ServerHitBin>();
+    public static final ConcurrentMap<String, ServerHitBin> requestSinceStarted = new ConcurrentRedisMap<String, ServerHitBin>("ServerHitBin.requestSinceStarted");
+    public static final ConcurrentMap<String, ServerHitBin> eventSinceStarted = new ConcurrentRedisMap<String, ServerHitBin>("ServerHitBin.eventSinceStarted");
+    public static final ConcurrentMap<String, ServerHitBin> viewSinceStarted = new ConcurrentRedisMap<String, ServerHitBin>("ServerHitBin.viewSinceStarted");
+    public static final ConcurrentMap<String, ServerHitBin> entitySinceStarted = new ConcurrentRedisMap<String, ServerHitBin>("ServerHitBin.entitySinceStarted");
+    public static final ConcurrentMap<String, ServerHitBin> serviceSinceStarted = new ConcurrentRedisMap<String, ServerHitBin>("ServerHitBin.serviceSinceStarted");
 
     public static void countRequest(String id, HttpServletRequest request, long startTime, long runningTime, GenericValue userLogin) {
         countHit(id, REQUEST, request, startTime, runningTime, userLogin);
@@ -147,7 +150,7 @@ public class ServerHitBin {
         String id = makeIdTenantAware(baseId, delegator);
 
         ServerHitBin bin = null;
-        Deque<ServerHitBin> binList = null;
+        RDeque<ServerHitBin> binList = null;
 
         switch (type) {
         case REQUEST:
@@ -172,8 +175,8 @@ public class ServerHitBin {
         }
 
         if (binList == null) {
-            binList = new ConcurrentLinkedDeque<ServerHitBin>();
-            Deque<ServerHitBin> listFromMap = null;
+            binList = CatalinaContainer.getClient().getDeque("ServerHitBin.binList");
+            RDeque<ServerHitBin> listFromMap = null;
             switch (type) {
             case REQUEST:
                 listFromMap = requestHistory.putIfAbsent(id, binList);
@@ -322,7 +325,7 @@ public class ServerHitBin {
         bin.addHit(runningTime);
     }
 
-    private final Delegator delegator;
+//    private final Delegator delegator;
     private final String id;
     private final int type;
     private final boolean limitLength;
@@ -339,7 +342,7 @@ public class ServerHitBin {
         this.id = id;
         this.type = type;
         this.limitLength = limitLength;
-        this.delegator = delegator;
+//        this.delegator = delegator;
         this.binLength = getNewBinLength();
         this.startTime = getEvenStartingTime(this.binLength);
         if (this.limitLength) {
@@ -358,7 +361,7 @@ public class ServerHitBin {
         this.id = oldBin.id;
         this.type = oldBin.type;
         this.limitLength = oldBin.limitLength;
-        this.delegator = oldBin.delegator;
+//        this.delegator = oldBin.delegator;
         this.binLength = oldBin.binLength;
 
         this.startTime = startTime;
@@ -374,9 +377,9 @@ public class ServerHitBin {
         this.maxTime = 0;
     }
 
-    public Delegator getDelegator() {
-        return this.delegator;
-    }
+//    public Delegator getDelegator() {
+//        return this.delegator;
+//    }
 
     public String getId() {
         return this.id;
@@ -497,7 +500,7 @@ public class ServerHitBin {
                 return;
             }
             
-            Debug.logInfo("Visit delegatorName=" + visit.getDelegator().getDelegatorName() + ", ServerHitBin delegatorName=" + this.delegator.getDelegatorName(), module);
+            Debug.logInfo("Visit delegatorName=" + visit.getDelegator().getDelegatorName() + ", ServerHitBin delegatorName=" + delegator.getDelegatorName(), module);
             
             GenericValue serverHit = delegator.makeValue("ServerHit");
 

@@ -98,7 +98,7 @@ public class PersistedServiceJob extends GenericServiceJob {
         } catch (GenericEntityException e) {
             throw new InvalidJobException("Unable to refresh JobSandbox value", e);
         }
-        if (!JobManager.instanceId.equals(jobValue.getString("runByInstanceId"))) {
+        if (jobValue.getString("runByInstanceId")!=null && !JobManager.instanceId.equals(jobValue.getString("runByInstanceId"))) {
             throw new InvalidJobException("Job has been accepted by a different instance");
         }
         Timestamp cancelTime = jobValue.getTimestamp("cancelDateTime");

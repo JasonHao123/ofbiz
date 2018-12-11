@@ -20,12 +20,12 @@ package org.apache.ofbiz.webapp.control;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ofbiz.base.concurrent.ConcurrentRedisMap;
 import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.UtilHttp;
 import org.apache.ofbiz.base.util.UtilMisc;
@@ -43,8 +43,8 @@ public final class ProtectViewWorker {
 
     private final static String module = ProtectViewWorker.class.getName();
     private static final String resourceWebapp = "WebappUiLabels";
-    private static final Map<String, Long> hitsByViewAccessed = new ConcurrentHashMap<String, Long>();
-    private static final Map<String, Long> durationByViewAccessed = new ConcurrentHashMap<String, Long>();
+    private static final Map<String, Long> hitsByViewAccessed = new ConcurrentRedisMap<String, Long>("ProtectViewWorker.hitsByViewAccessed");
+    private static final Map<String, Long> durationByViewAccessed = new ConcurrentRedisMap<String, Long>("ProtectViewWorker.durationByViewAccessed");
     private static final Long one = new Long(1);
 
     private ProtectViewWorker () {}

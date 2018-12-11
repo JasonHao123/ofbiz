@@ -25,13 +25,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.shiro.crypto.OperationMode;
-import org.apache.ofbiz.entity.util.DefaultHashService;
-import org.apache.ofbiz.entity.util.HashRequest;
+import org.apache.ofbiz.base.concurrent.ConcurrentRedisMap;
 import org.apache.ofbiz.base.crypto.DesCrypt;
 import org.apache.ofbiz.base.crypto.HashCrypt;
 import org.apache.ofbiz.base.util.Debug;
@@ -45,13 +42,14 @@ import org.apache.ofbiz.entity.GenericEntityException;
 import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.model.ModelField.EncryptMethod;
 import org.apache.ofbiz.entity.transaction.TransactionUtil;
+import org.apache.shiro.crypto.OperationMode;
 
 public final class EntityCrypto implements Serializable{
 
     public static final String module = EntityCrypto.class.getName();
 
     protected final Delegator delegator;
-    protected final ConcurrentMap<String, byte[]> keyMap = new ConcurrentHashMap<String, byte[]>();
+    protected final ConcurrentMap<String, byte[]> keyMap = new ConcurrentRedisMap<String, byte[]>("EntityCrypto.keyMap");
     protected final StorageHandler[] handlers;
 
     public EntityCrypto(Delegator delegator, String kekText) throws EntityCryptoException {

@@ -28,7 +28,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
 
     <!-- the transaction factory class to use, one is needed for each way of getting JTA interfaces -->
     <!-- Use this one for Geronimo -->
-    <transaction-factory class="org.apache.ofbiz.entity.transaction.AtomikosTransactionFactory"/>
+    <transaction-factory class="org.apache.ofbiz.entity.transaction.GeronimoTransactionFactory"/>
 
     <!-- Use this one for getting the JTA objects from JNDI -->
     <!-- NOTE: to use the JndiFactory you must specify the necessary JNDI properties
@@ -47,7 +47,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
     -->
 
     <!-- the connection factory class to use, one is needed for obtaining connections/pools for defined resources -->
-    <connection-factory class="org.apache.ofbiz.entity.connection.HikariConnectionFactory"/>
+    <connection-factory class="org.apache.ofbiz.entity.connection.AtomikosConnectionFactory"/>
 
     <debug-xa-resources value="false" />  <!-- see https://issues.apache.org/jira/browse/OFBIZ-4282 for more -->
     
@@ -469,7 +469,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext-test"/>
         <read-data reader-name="ext-demo"/>
         <inline-jdbc
-                jdbc-driver="org.postgresql.Driver"
+                jdbc-driver="org.postgresql.xa.PGXADataSource"
                 jdbc-uri="jdbc:postgresql://127.0.0.1/ofbiz"
                 jdbc-username="ofbiz"
                 jdbc-password="ofbiz"
@@ -505,7 +505,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext-test"/>
         <read-data reader-name="ext-demo"/>
         <inline-jdbc
-                jdbc-driver="org.postgresql.Driver"
+                jdbc-driver="org.postgresql.xa.PGXADataSource"
                 jdbc-uri="jdbc:postgresql://127.0.0.1/ofbizolap"
                 jdbc-username="ofbiz"
                 jdbc-password="ofbiz"
@@ -541,7 +541,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext-test"/>
         <read-data reader-name="ext-demo"/>
         <inline-jdbc
-                jdbc-driver="org.postgresql.Driver"
+                jdbc-driver="org.postgresql.xa.PGXADataSource"
                 jdbc-uri="jdbc:postgresql://127.0.0.1/ofbiztenant"
                 jdbc-username="ofbiz"
                 jdbc-password="ofbiz"

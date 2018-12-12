@@ -44,6 +44,7 @@ public class AtomikosTransactionFactory implements TransactionFactory {
         // creates an instance of Geronimo transaction context, etc with a local transaction factory which is not bound to a registry
         try {
             geronimoTransactionManager = new UserTransactionManager();
+            geronimoTransactionManager.init(); 
         } catch (Exception e) {
             Debug.logError(e, "Error initializing Geronimo transaction manager: " + e.toString(), module);
         }
@@ -80,6 +81,10 @@ public class AtomikosTransactionFactory implements TransactionFactory {
 
     public void shutdown() {
         ConnectionFactoryLoader.getInstance().closeAll();
+        if(geronimoTransactionManager!=null) {
+	        	geronimoTransactionManager.close();
+	        	geronimoTransactionManager = null;
+        }
         /*
         if (transactionContextManager != null) {
             // TODO: need to do anything for this?

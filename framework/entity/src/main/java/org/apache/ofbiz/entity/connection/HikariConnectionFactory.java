@@ -100,6 +100,20 @@ public class HikariConnectionFactory implements ConnectionFactory {
         config.setJdbcUrl(jdbcUri);
         config.setUsername(jdbcUsername);
         config.setPassword(jdbcPassword);
+        String transIso = jdbcElement.getIsolationLevel();
+        if (!transIso.isEmpty()) {
+            if ("Serializable".equals(transIso)) {
+            		config.setTransactionIsolation("TRANSACTION_SERIALIZABLE");
+            } else if ("RepeatableRead".equals(transIso)) {
+            		config.setTransactionIsolation("TRANSACTION_REPEATABLE_READ");
+            } else if ("ReadUncommitted".equals(transIso)) {
+            		config.setTransactionIsolation("TRANSACTION_READ_UNCOMMITTED");
+            } else if ("ReadCommitted".equals(transIso)) {
+            		config.setTransactionIsolation("TRANSACTION_READ_COMMITTED");
+            } else if ("None".equals(transIso)) {
+            		config.setTransactionIsolation("TRANSACTION_NONE");
+            }
+        }
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");

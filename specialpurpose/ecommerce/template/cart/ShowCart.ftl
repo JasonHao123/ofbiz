@@ -72,84 +72,22 @@ under the License.
 </script>
 <#assign fixedAssetExist = shoppingCart.containAnyWorkEffortCartItems() />
 <#-- change display format when rental items exist in the shoppingcart -->
-<div>
-  <h2>
-    <#if ((sessionAttributes.lastViewedProducts)?has_content && sessionAttributes.lastViewedProducts?size > 0)>
-      <#assign continueLink = "/product?product_id=" + sessionAttributes.lastViewedProducts.get(0) />
-    <#else>
-      <#assign continueLink = "/main" />
-    </#if>
-    <a href="<@ofbizUrl>${continueLink}</@ofbizUrl>" class="submenutext">
-      ${uiLabelMap.EcommerceContinueShopping}
-    </a>
-    <#if (shoppingCartSize > 0)>
-      <a href="<@ofbizUrl>checkoutoptions</@ofbizUrl>" class="submenutext">
-        ${uiLabelMap.OrderCheckout}
-      </a>
-    <#else>
-      <span class="submenutextrightdisabled">
-        ${uiLabelMap.OrderCheckout}
-      </span>
-    </#if>
-    ${uiLabelMap.CommonQuickAdd}
-  </h2>
-  <div>
-    <div>
-      <form method="post"
-          action="<@ofbizUrl>additem<#if requestAttributes._CURRENT_VIEW_?has_content>/${requestAttributes._CURRENT_VIEW_}</#if></@ofbizUrl>"
-          name="quickaddform">
-        <fieldset>
-          ${uiLabelMap.EcommerceProductNumber}
-          <input type="text" class="inputBox" name="add_product_id" value="${requestParameters.add_product_id!}" />
-          <#-- check if rental data present  insert extra fields in Quick Add-->
-          <#if (product?? && product.getString("productTypeId") == "ASSET_USAGE"
-              ) || (product?? && product.getString("productTypeId") == "ASSET_USAGE_OUT_IN")>
-            ${uiLabelMap.EcommerceStartDate}:
-            <input type="text" class="inputBox" size="10" name="reservStart"
-                value="${requestParameters.reservStart?default("")}" />
-            ${uiLabelMap.EcommerceLength}:
-            <input type="text" class="inputBox" size="2" name="reservLength"
-                value="${requestParameters.reservLength?default("")}" />
-            </div>
-            <div>
-            &nbsp;&nbsp;${uiLabelMap.OrderNbrPersons}:
-            <input type="text" class="inputBox" size="3" name="reservPersons"
-                value="${requestParameters.reservPersons?default("1")}" />
-          </#if>
-          ${uiLabelMap.CommonQuantity}:
-          <input type="text" class="inputBox" size="5" name="quantity"
-              value="${requestParameters.quantity?default("1")}" />
-          <input type="submit" class="smallSubmit" value="${uiLabelMap.OrderAddToCart}" />
-          <#-- <a href="javascript:document.quickaddform.submit()" class="button">
-                 <span>[${uiLabelMap.OrderAddToCart}]</span>
-               </a> -->
-        </fieldset>
-      </form>
-    </div>
-  </div>
-</div>
-
-<script type="text/javascript">
-    //<![CDATA[
-        document.quickaddform.add_product_id.focus();
-    //]]>
-</script>
 
 <div>
   <div>
     <div>
-      <div class="lightbuttontextdisabled">
-        <#--<a href="<@ofbizUrl>main</@ofbizUrl>" class="lightbuttontext">
+      <div class="btn-list">
+        <a href="<@ofbizUrl>main</@ofbizUrl>" class="btn btn-secondary">
               [${uiLabelMap.EcommerceContinueShopping}]
-            </a>-->
+            </a>
         <#if (shoppingCartSize > 0)>
-          <a href="javascript:document.cartform.submit();" class="submenutext">
+          <a href="javascript:document.cartform.submit();" class="btn btn-secondary">
             ${uiLabelMap.EcommerceRecalculateCart}
           </a>
-          <a href="<@ofbizUrl>emptycart</@ofbizUrl>" class="submenutext">
+          <a href="<@ofbizUrl>emptycart</@ofbizUrl>" class="btn btn-secondary">
             ${uiLabelMap.EcommerceEmptyCart}
           </a>
-          <a href="javascript:removeSelected();" class="submenutext">
+          <a href="javascript:removeSelected();" class="btn btn-secondary">
             ${uiLabelMap.EcommerceRemoveSelected}
           </a>
         <#else>
@@ -158,11 +96,11 @@ under the License.
           <span class="submenutextdisabled">${uiLabelMap.EcommerceRemoveSelected}</span>
         </#if>
         <#if (shoppingCartSize > 0)>
-          <a href="<@ofbizUrl>checkoutoptions</@ofbizUrl>" class="submenutextright">
+          <a href="<@ofbizUrl>checkoutoptions</@ofbizUrl>" class="btn btn-secondary">
             ${uiLabelMap.OrderCheckout}
           </a>
         <#else>
-          <span class="submenutextrightdisabled">${uiLabelMap.OrderCheckout}</span>
+          <span class="btn btn-secondary submenutextrightdisabled">${uiLabelMap.OrderCheckout}</span>
         </#if>
       </div>
     </div>
@@ -170,125 +108,7 @@ under the License.
     <h2>&nbsp;${uiLabelMap.OrderShoppingCart}</h2>
   </div>
   <div>
-    <#if (shoppingCartSize > 0)>
-    
-    
-    
-    
-                  <div class="col-lg-9">
-                <div class="card">
-                  <table class="table card-table table-vcenter">
-                    <tr>
-                      <td><img src="/images/demo/products/apple-iphone7-special.jpg" alt="" class="h-8"></td>
-                      <td>
-                        Apple iPhone 7 Plus 256GB Red Special Edition
-                      </td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">98 reviews</td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">38 offers</td>
-                      <td class="text-right">
-                        <strong>$499</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><img src="/images/demo/products/apple-macbook-pro.jpg" alt="" class="h-8"></td>
-                      <td>
-                        Apple MacBook Pro i7 3,1GHz/16/512/Radeon 560 Space Gray
-                        <div class="badge badge-default badge-md">New</div>
-                      </td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">97 reviews</td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">13 offers</td>
-                      <td class="text-right">
-                        <strong>$1499</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><img src="/images/demo/products/apple-iphone7.jpg" alt="" class="h-8"></td>
-                      <td>
-                        Apple iPhone 7 32GB Jet Black
-                      </td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">48 reviews</td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">38 offers</td>
-                      <td class="text-right">
-                        <strong>$499</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><img src="/images/demo/products/gopro-hero.jpg" alt="" class="h-8"></td>
-                      <td>
-                        GoPro HERO6 Black
-                        <div class="badge badge-default badge-md">New</div>
-                      </td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">66 reviews</td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">47 offers</td>
-                      <td class="text-right">
-                        <strong>$599</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><img src="/images/demo/products/msi.jpg" alt="" class="h-8"></td>
-                      <td>
-                        MSI GV62 i5-7300HQ/8GB/1TB/Win10X GTX1050
-                      </td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">59 reviews</td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">26 offers</td>
-                      <td class="text-right">
-                        <strong>$1599</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><img src="/images/demo/products/xiaomi-mi.jpg" alt="" class="h-8"></td>
-                      <td>
-                        Xiaomi Mi A1 64GB Black
-                        <div class="badge badge-default badge-md">New</div>
-                      </td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">63 reviews</td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">43 offers</td>
-                      <td class="text-right">
-                        <strong>$269</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><img src="/images/demo/products/huawei-mate.jpg" alt="" class="h-8"></td>
-                      <td>
-                        Huawei Mate 10 Pro Dual SIM Gray
-                      </td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">71 reviews</td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">12 offers</td>
-                      <td class="text-right">
-                        <strong>$999</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><img src="/images/demo/products/sony-kd.jpg" alt="" class="h-8"></td>
-                      <td>
-                        Sony KD-49XE7005
-                        <div class="badge badge-default badge-md">New</div>
-                      </td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">54 reviews</td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">14 offers</td>
-                      <td class="text-right">
-                        <strong>$799</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><img src="/images/demo/products/samsung-galaxy.jpg" alt="" class="h-8"></td>
-                      <td>
-                        Samsung Galaxy A5 A520F 2017 LTE Black Sky
-                      </td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">37 reviews</td>
-                      <td class="text-right text-muted d-none d-md-table-cell text-nowrap">40 offers</td>
-                      <td class="text-right">
-                        <strong>$399</strong>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
-    
-    
-    
-    
+    <#if (shoppingCartSize > 0)> 
     
       <form method="post" action="<@ofbizUrl>modifycart</@ofbizUrl>" name="cartform">
         <fieldset>

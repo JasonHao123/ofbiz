@@ -50,8 +50,7 @@ under the License.
   <#if contactMechTypeId??>
     <#if !contactMech??>
     <h2>${uiLabelMap.PartyCreateNewContactInfo}</h2>
-    <a href='<@ofbizUrl>${donePage}</@ofbizUrl>' class="button">${uiLabelMap.CommonGoBack}</a>
-    <a href="javascript:document.editcontactmechform.submit()" class="button">${uiLabelMap.CommonSave}</a>
+
     <table width="90%" border="0" cellpadding="2" cellspacing="0">
     <form method="post" action='<@ofbizUrl>${reqName}</@ofbizUrl>' name="editcontactmechform" id="editcontactmechform">
     <div>

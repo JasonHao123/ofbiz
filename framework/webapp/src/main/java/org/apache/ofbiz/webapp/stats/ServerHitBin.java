@@ -21,6 +21,7 @@ package org.apache.ofbiz.webapp.stats;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Deque;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,8 +39,6 @@ import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.model.ModelEntity;
 import org.apache.ofbiz.entity.util.EntityQuery;
 import org.apache.ofbiz.entity.util.EntityUtilProperties;
-import org.redisson.RedissonDeque;
-import org.redisson.api.RDeque;
 
 import com.ibm.icu.util.Calendar;
 
@@ -61,11 +60,11 @@ public class ServerHitBin implements Serializable{
     private static final String[] typeIds = {"", "REQUEST", "EVENT", "VIEW", "ENTITY", "SERVICE"};
 
     // these Maps contain Lists of ServerHitBin objects by id, the most recent is first in the list
-    public static final ConcurrentMap<String, RDeque<ServerHitBin>> requestHistory = new ConcurrentRedisMap<String, RDeque<ServerHitBin>>("ServerHitBin.requestHistory");
-    public static final ConcurrentMap<String, RDeque<ServerHitBin>> eventHistory = new ConcurrentRedisMap<String, RDeque<ServerHitBin>>("ServerHitBin.eventHistory");
-    public static final ConcurrentMap<String, RDeque<ServerHitBin>> viewHistory = new ConcurrentRedisMap<String, RDeque<ServerHitBin>>("ServerHitBin.viewHistory");
-    public static final ConcurrentMap<String, RDeque<ServerHitBin>> entityHistory = new ConcurrentRedisMap<String, RDeque<ServerHitBin>>("ServerHitBin.entityHistory");
-    public static final ConcurrentMap<String, RDeque<ServerHitBin>> serviceHistory = new ConcurrentRedisMap<String, RDeque<ServerHitBin>>("ServerHitBin.serviceHistory");
+    public static final ConcurrentMap<String, Deque<ServerHitBin>> requestHistory = new ConcurrentRedisMap<String, Deque<ServerHitBin>>("ServerHitBin.requestHistory");
+    public static final ConcurrentMap<String, Deque<ServerHitBin>> eventHistory = new ConcurrentRedisMap<String, Deque<ServerHitBin>>("ServerHitBin.eventHistory");
+    public static final ConcurrentMap<String, Deque<ServerHitBin>> viewHistory = new ConcurrentRedisMap<String, Deque<ServerHitBin>>("ServerHitBin.viewHistory");
+    public static final ConcurrentMap<String, Deque<ServerHitBin>> entityHistory = new ConcurrentRedisMap<String, Deque<ServerHitBin>>("ServerHitBin.entityHistory");
+    public static final ConcurrentMap<String, Deque<ServerHitBin>> serviceHistory = new ConcurrentRedisMap<String, Deque<ServerHitBin>>("ServerHitBin.serviceHistory");
 
     // these Maps contain ServerHitBin objects by id
     public static final ConcurrentMap<String, ServerHitBin> requestSinceStarted = new ConcurrentRedisMap<String, ServerHitBin>("ServerHitBin.requestSinceStarted");
@@ -150,7 +149,7 @@ public class ServerHitBin implements Serializable{
         String id = makeIdTenantAware(baseId, delegator);
 
         ServerHitBin bin = null;
-        RDeque<ServerHitBin> binList = null;
+        Deque<ServerHitBin> binList = null;
 
         switch (type) {
         case REQUEST:
@@ -175,8 +174,12 @@ public class ServerHitBin implements Serializable{
         }
 
         if (binList == null) {
-            binList = CatalinaContainer.getClient().getDeque("ServerHitBin.binList");
-            RDeque<ServerHitBin> listFromMap = null;
+        		if(CatalinaContainer.getClient()==null) {
+        			binList = new ConcurrentLinkedDeque<ServerHitBin>();
+        		}else {
+        			binList = CatalinaContainer.getClient().getDeque("ServerHitBin.binList");
+        		}
+            Deque<ServerHitBin> listFromMap = null;
             switch (type) {
             case REQUEST:
                 listFromMap = requestHistory.putIfAbsent(id, binList);

@@ -173,7 +173,12 @@ public class CatalinaContainer implements Container {
         boolean useNaming = ContainerConfig.getPropertyValue(cc, "use-naming", false);
         redisSessionReplication = ContainerConfig.getPropertyValue(cc, "redis-session-replication", false);
         //int debug = ContainerConfig.getPropertyValue(cc, "debug", 0);
-
+        if(redisSessionReplication) {
+    		manager = new RedissonSessionManager();
+    		manager.setConfigPath(System.getProperty("ofbiz.home") + "/framework/catalina/config/redisson.yaml" );
+    		manager.setReadMode("MEMORY");
+    		manager.setUpdateMode("DEFAULT");
+        }
         // grab some global context settings
         this.contextReloadable = ContainerConfig.getPropertyValue(cc, "apps-context-reloadable", false);
         this.crossContext = ContainerConfig.getPropertyValue(cc, "apps-cross-context", true);
@@ -585,10 +590,7 @@ public class CatalinaContainer implements Container {
 
         context.setDistributable(contextIsDistributable);
         if(redisSessionReplication) {
-	    		manager = new RedissonSessionManager();
-	    		manager.setConfigPath(System.getProperty("ofbiz.home") + "/framework/catalina/config/redisson.yaml" );
-	    		manager.setReadMode("MEMORY");
-	    		manager.setUpdateMode("DEFAULT");
+
         		context.setManager(manager);
         }
         context.setCrossContext(crossContext);

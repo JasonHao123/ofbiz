@@ -47,7 +47,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
     -->
 
     <!-- the connection factory class to use, one is needed for obtaining connections/pools for defined resources -->
-    <connection-factory class="org.apache.ofbiz.entity.connection.AtomikosConnectionFactory"/>
+    <connection-factory class="org.apache.ofbiz.entity.connection.DBCPConnectionFactory"/>
 
     <debug-xa-resources value="false" />  <!-- see https://issues.apache.org/jira/browse/OFBIZ-4282 for more -->
     
@@ -469,13 +469,14 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext-test"/>
         <read-data reader-name="ext-demo"/>
         <inline-jdbc
-                jdbc-driver="org.postgresql.xa.PGXADataSource"
+                jdbc-driver="org.postgresql.Driver"
                 jdbc-uri="jdbc:postgresql://127.0.0.1/ofbiz"
                 jdbc-username="ofbiz"
                 jdbc-password="ofbiz"
                 isolation-level="ReadCommitted"
                 pool-minsize="2"
                 pool-maxsize="250"
+                pool-xa-wrapper-class="org.postgresql.xa.PGXADataSource"
                 time-between-eviction-runs-millis="600000"/><!-- Be warned that at this date (2009-09-20) the max_connections parameters in postgresql.conf
                 is set by default to 100 by the initdb process see http://www.postgresql.org/docs/8.4/static/runtime-config-connection.html#GUC-MAX-CONNECTIONS-->
 
@@ -505,13 +506,14 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext-test"/>
         <read-data reader-name="ext-demo"/>
         <inline-jdbc
-                jdbc-driver="org.postgresql.xa.PGXADataSource"
+                jdbc-driver="org.postgresql.Driver"
                 jdbc-uri="jdbc:postgresql://127.0.0.1/ofbizolap"
                 jdbc-username="ofbiz"
                 jdbc-password="ofbiz"
                 isolation-level="ReadCommitted"
                 pool-minsize="2"
                 pool-maxsize="250"
+                pool-xa-wrapper-class="org.postgresql.xa.PGXADataSource"
                 time-between-eviction-runs-millis="600000"/><!-- Be warned that at this date (2009-09-20) the max_connections parameters in postgresql.conf
                     is set by default to 100 by the initdb process see http://www.postgresql.org/docs/8.4/static/runtime-config-connection.html#GUC-MAX-CONNECTIONS-->
         
@@ -541,13 +543,14 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext-test"/>
         <read-data reader-name="ext-demo"/>
         <inline-jdbc
-                jdbc-driver="org.postgresql.xa.PGXADataSource"
+                jdbc-driver="org.postgresql.Driver"
                 jdbc-uri="jdbc:postgresql://127.0.0.1/ofbiztenant"
                 jdbc-username="ofbiz"
                 jdbc-password="ofbiz"
                 isolation-level="ReadCommitted"
                 pool-minsize="2"
                 pool-maxsize="250"
+                pool-xa-wrapper-class="org.postgresql.xa.PGXADataSource"
                 time-between-eviction-runs-millis="600000"/><!-- Be warned that at this date (2009-09-20) the max_connections parameters in postgresql.conf
                     is set by default to 100 by the initdb process see http://www.postgresql.org/docs/8.4/static/runtime-config-connection.html#GUC-MAX-CONNECTIONS-->
         

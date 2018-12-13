@@ -57,7 +57,7 @@ ${virtualJavaScript!}
                     <div class="card">
                       <div class="card-body">
                         <div class="mb-4 text-center">
-                          <img src="<@ofbizContentUrl>${contentPathPrefix!}${largeImageUrl}</@ofbizContentUrl>" alt="Apple iPhone 7 128GB" class="img-fluid">
+                          <a href="${productUrl}"><img src="<@ofbizContentUrl>${contentPathPrefix!}${largeImageUrl}</@ofbizContentUrl>" alt="Apple iPhone 7 128GB" class="img-fluid"></a>
                         </div>
                         <h4 class="card-title" ><a href="${productUrl}">${productContentWrapper.get("PRODUCT_NAME", "html")!}</a></h4>
                         <div class="card-subtitle">

@@ -33,7 +33,7 @@ ext.os = System.getProperty('os.name').toLowerCase()
 ext.pluginsDir = "${rootDir}/specialpurpose"
 
 // java settings
-List jvmArguments = ['-Xms512M', '-Xmx2048M','-Dcom.atomikos.icatch.file=framework/entity/config/transactions.properties']
+List jvmArguments = ['-Xms512M', '-Xmx2048M']
 if (project.hasProperty('jvmArgs')) {
     jvmArguments = jvmArgs.tokenize()
 }
@@ -110,10 +110,6 @@ dependencies {
     compile 'org.apache.commons:commons-csv:1.1'
     compile 'org.apache.commons:commons-dbcp2:2.1'
     compile 'org.apache.geronimo.components:geronimo-transaction:3.1.1'
-    compile 'com.atomikos:transactions:4.0.6'
-    compile 'com.atomikos:transactions-jta:4.0.6'
-    compile 'com.atomikos:transactions-jdbc:4.0.6'
-    compile 'com.zaxxer:HikariCP:3.2.0'
     compile 'org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1'
     compile 'org.apache.httpcomponents:httpclient-cache:4.4.1'
     compile 'org.apache.logging.log4j:log4j-api:2.6.2' // the API of log4j 2

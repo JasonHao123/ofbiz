@@ -23,11 +23,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.transaction.Transaction;
 
+import org.apache.ofbiz.base.concurrent.ConcurrentRedisMap;
 import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.entity.GenericEntityException;
 import org.apache.ofbiz.entity.datasource.GenericHelperInfo;
@@ -44,7 +44,7 @@ public class SequenceUtil implements Serializable{
 
     public static final String module = SequenceUtil.class.getName();
 
-    private final ConcurrentMap<String, SequenceBank> sequences = new ConcurrentHashMap<String, SequenceBank>();
+    private final ConcurrentMap<String, SequenceBank> sequences = new ConcurrentRedisMap<String, SequenceBank>("SequenceUtil.sequences");
     private final GenericHelperInfo helperInfo;
     private final String tableName;
     private final String nameColName;

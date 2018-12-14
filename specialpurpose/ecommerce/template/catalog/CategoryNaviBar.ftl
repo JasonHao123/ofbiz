@@ -10,14 +10,14 @@
 	                     </#if></a>
                       
 				           <div class="dropdown-menu dropdown-menu-arrow">
-				         <!--   	 <a href="/ecomseo/category/${root.productCategoryId?js_string}.html" class="dropdown-item ">
+				         <!--   	 <a href="/ecommerce/category/${root.productCategoryId?js_string}.html" class="dropdown-item ">
 		                       	 <#if root.categoryName??>All ${root.categoryName?js_string}
 	                     <#elseif root.categoryDescription??>All ${root.categoryDescription?js_string}
 	                     <#else>All ${root.productCategoryId?js_string}
 	                     </#if>
 		                      </a> -->
 				            <#list root.child?sort_by("productCategoryId") as sub>
-		                      <a href="/ecomseo/category/${sub.productCategoryId?js_string}.html" class="dropdown-item ">
+		                      <a href="/ecommerce/category/${sub.productCategoryId?js_string}.html" class="dropdown-item ">
 		                       	 <#if sub.categoryName??>${sub.categoryName?js_string}
 			                     <#elseif sub.categoryDescription??>${sub.categoryDescription?js_string}
 			                     <#else>${sub.productCategoryId?js_string}
@@ -30,7 +30,7 @@
                   </li>
                    <#else>
                    	<li class="nav-item">
-                    	<a href="/ecomseo/category/${root.productCategoryId?js_string}.html" class="nav-link"><i class="fe fe-home"></i> 
+                    	<a href="/ecommerce/category/${root.productCategoryId?js_string}.html" class="nav-link"><i class="fe fe-home"></i> 
 						<#if root.categoryName??>${root.categoryName?js_string}
 	                     <#elseif root.categoryDescription??>${root.categoryDescription?js_string}
 	                     <#else>${root.productCategoryId?js_string}

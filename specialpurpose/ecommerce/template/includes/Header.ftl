@@ -20,7 +20,7 @@ under the License.
         <div class="header py-4">
           <div class="container">
             <div class="d-flex">
-              <a class="header-brand" href="<@ofbizContentUrl>/ecomseo</@ofbizContentUrl>">
+              <a class="header-brand" href="<@ofbizContentUrl>/ecommerce</@ofbizContentUrl>">
                 <#if sessionAttributes.overrideLogo??>
 			      <img class="header-brand-img" src="<@ofbizContentUrl>${sessionAttributes.overrideLogo}</@ofbizContentUrl>" alt="Logo"/>
 			    <#elseif catalogHeaderLogo??>
@@ -32,13 +32,19 @@ under the License.
               <div class="d-flex order-lg-2 ml-auto">
  
                 ${screens.render("component://ecommerce/widget/CartScreens.xml#microcart")}
-
                 <div class="dropdown">
                   <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-                    <span class="avatar" style="background-image: url(/images/demo/faces/female/25.jpg)"></span>
+                    <span class="avatar" style="background-image: url(/images/demo/faces/female/user.png)"></span>
                     <span class="ml-2 d-none d-lg-block">
-                      <span class="text-default">Jane Pearson</span>
-                      <small class="text-muted d-block mt-1">Administrator</small>
+                      <span class="text-default">
+                      <#if userLogin??>
+                      <#assign postedPerson = userLogin.getRelatedOne("Person", false)!>
+                      ${postedPerson.firstName} ${postedPerson.lastName}
+                      <#else>
+                      	Guest
+                      </#if>
+                      </span>
+                      <small class="text-muted d-block mt-1"></small>
                     </span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -49,7 +55,7 @@ under the License.
                       <i class="dropdown-icon fe fe-settings"></i> ${uiLabelMap.CommonMessages}
                     </a>
                     <a class="dropdown-item" href="<@ofbizUrl>ListQuotes</@ofbizUrl>">
-                      <span class="float-right"><span class="badge badge-primary">6</span></span>
+                    <!--  <span class="float-right"><span class="badge badge-primary">6</span></span> -->
                       <i class="dropdown-icon fe fe-mail"></i> ${uiLabelMap.OrderOrderQuotes}
                     </a>
                     <a class="dropdown-item" href="<@ofbizUrl>ListRequests</@ofbizUrl>">

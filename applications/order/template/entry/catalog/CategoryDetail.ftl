@@ -44,7 +44,7 @@ under the License.
     <#assign viewIndexMax = Static["java.lang.Math"].ceil((listSize)?double / viewSize?double)>
       <#if (viewIndexMax?int > 0)>
         <div class="product-prevnext">
-            <select name="pageSelect" onchange="callDocumentByPaginate(this[this.selectedIndex].value);">
+            <select name="pageSelect" class="form-control custom-select w-auto" onchange="callDocumentByPaginate(this[this.selectedIndex].value);">
                 <option value="#">${uiLabelMap.CommonPage} ${viewIndex?int + 1} ${uiLabelMap.CommonOf} ${viewIndexMax}</option>
                 <#if (viewIndex?int > 1)>
                     <#list 1..viewIndexMax as curViewNum>

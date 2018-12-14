@@ -38,7 +38,7 @@ under the License.
             <div class="product-prevnext">
                 <#-- Start Page Select Drop-Down -->
                 <#assign viewIndexMax = Static["java.lang.Math"].ceil((listSize)?double / viewSize?double)>
-                <select name="pageSelect" onchange="window.location=this[this.selectedIndex].value;">
+                <select name="pageSelect" class="form-control custom-select w-auto" onchange="window.location=this[this.selectedIndex].value;">
                   <option value="#">${uiLabelMap.CommonPage} ${viewIndex?int + 1} ${uiLabelMap.CommonOf} ${viewIndexMax}</option>
                   <#list 1..viewIndexMax as curViewNum>
                     <option value="<@ofbizUrl>keywordsearch/~VIEW_SIZE=${viewSize}/~VIEW_INDEX=${curViewNum?int - 1}/~clearSearch=N</@ofbizUrl>">${uiLabelMap.CommonGotoPage} ${curViewNum}</option>

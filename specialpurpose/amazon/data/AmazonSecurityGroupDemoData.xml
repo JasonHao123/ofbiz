@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <SecurityGroupPermission groupId="FULLADMIN" permissionId="AMAZON_ADMIN"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="AMAZON_CREATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="AMAZON_DELETE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="AMAZON_UPDATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="AMAZON_VIEW"/>
+    <SecurityGroupPermission groupId="VIEWADMIN" permissionId="AMAZON_VIEW"/>
+    <SecurityGroupPermission groupId="BIZADMIN" permissionId="AMAZON_ADMIN"/>
+</entity-engine-xml>

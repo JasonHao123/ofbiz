@@ -91,7 +91,6 @@ under the License.
         <response name="requirePasswordChange" type="view" value="requirePasswordChange"/>
         <response name="error" type="view" value="login"/>
     </request-map>
-    
     <request-map uri="logout">
         <security https="true" auth="true"/>
         <event type="java" path="org.apache.ofbiz.webapp.control.LoginWorker" invoke="logout"/>
@@ -1166,8 +1165,8 @@ under the License.
     <request-map uri="forgotpassword">
         <security https="true" auth="false"/>
         <event type="java" path="org.apache.ofbiz.securityext.login.LoginEvents" invoke="forgotPassword"/>
-        <response name="success" type="view" value="forgotPassword"/>
-        <response name="error" type="view" value="forgotPassword"/>
+        <response name="success" type="view" value="login"/>
+        <response name="error" type="view" value="login"/>
     </request-map>
 
     <request-map uri="tellafriend"><security https="false" auth="false"/><response name="success" type="view" value="tellafriend"/></request-map>
@@ -1883,8 +1882,6 @@ under the License.
     <view-map name="policies" type="screen" page="component://ecommerce/widget/CommonScreens.xml#policies"/>
     <view-map name="login" type="screen" page="component://ecommerce/widget/CommonScreens.xml#login"/>
     <view-map name="requirePasswordChange" type="screen" page="component://ecommerce/widget/CommonScreens.xml#requirePasswordChange"/>
-    <view-map name="forgotPassword" type="screen" page="component://ecommerce/widget/CommonScreens.xml#forgotPassword"/>
-
 
     <!-- Cart Views -->
     <view-map name="editShoppingList" type="screen" page="component://ecommerce/widget/ShoppingListScreens.xml#editShoppingList"/>

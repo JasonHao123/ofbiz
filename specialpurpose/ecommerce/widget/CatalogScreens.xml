@@ -40,7 +40,7 @@ under the License.
                 <script location="component://order/groovyScripts/entry/catalog/KeywordSearchOptions.groovy"/>
             </actions>
             <widgets>
-                <platform-specific><html><html-template location="component://ecommerce/template/includes/KeywordSearchBox.ftl"/></html></platform-specific>
+                <platform-specific><html><html-template location="component://order/template/entry/catalog/KeywordSearchBox.ftl"/></html></platform-specific>
             </widgets>
         </section>
     </screen>
@@ -135,7 +135,7 @@ under the License.
                 <script location="component://order/groovyScripts/entry/catalog/ProductSummary.groovy"/>
             </actions>
             <widgets>
-                <platform-specific><html><html-template location="component://ecommerce/template/catalog/ProductSummary.ftl"/></html></platform-specific>
+                <platform-specific><html><html-template location="component://order/template/entry/catalog/ProductSummary.ftl"/></html></platform-specific>
             </widgets>
         </section>
     </screen>
@@ -509,8 +509,7 @@ under the License.
     <screen name="showBestSellingCategory">
         <section>
             <actions>
-                <!-- <script location="component://ecommerce/groovyScripts/catalog/BestSellingCategory.groovy"/> -->
-                <script location="component://ecommerce/groovyScripts/cart/ShowPromoImage.groovy"/>
+                <script location="component://ecommerce/groovyScripts/catalog/BestSellingCategory.groovy"/>
             </actions>
             <widgets>
                 <platform-specific><html><html-template location="component://ecommerce/template/catalog/ShowBestSellingCategory.ftl"/></html></platform-specific>
@@ -529,20 +528,6 @@ under the License.
             </widgets>
         </section>
     </screen>
-    
-    <screen name="categorynavibar">
-        <section>
-            <actions>
-                <set field="tabButtonItem" value="LookupProductCategories"/>
-                
-                <script location="component://ecommerce/groovyScripts/catalog/ProductCategories.groovy"/>
-            </actions>
-            <widgets>
-                <platform-specific><html><html-template location="component://ecommerce/template/catalog/CategoryNaviBar.ftl"/></html></platform-specific>
-            </widgets>
-        </section>
-    </screen>
-
     <screen name="productCategoryList">
         <section>
             <condition>

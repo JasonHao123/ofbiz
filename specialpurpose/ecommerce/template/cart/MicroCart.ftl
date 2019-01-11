@@ -22,14 +22,9 @@ under the License.
 <#else>
   <#assign shoppingCartSize = 0>
 </#if>
-<div id="microcart" class="dropdown d-md-flex">
-         
-
-       
-                  <a class="nav-link icon" data-toggle="dropdown">
-        <#if (shoppingCartSize > 0)>
+<div id="microcart">
+  <#if (shoppingCartSize > 0)>
     <p id="microCartNotEmpty">
-    
       ${uiLabelMap.EcommerceCartHas}
       <strong id="microCartQuantity">
         ${shoppingCart.getTotalQuantity()}
@@ -45,34 +40,44 @@ under the License.
     </p>
     <span id="microCartEmpty" style="display:none">${uiLabelMap.OrderShoppingCartEmpty}</span>
   <#else>
-    
-  </#if>  
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                  	 <#list shoppingCart.items() as cartLine>
-                  	  <#if cartLine.getParentProductId()??>
-                        <#assign parentProductId = cartLine.getParentProductId() />
-                      <#else>
-                        <#assign parentProductId = cartLine.getProductId() />
-                      </#if>
-                    <a href="<@ofbizCatalogAltUrl productId=parentProductId/>" class="dropdown-item d-flex">
-                     <#assign smallImageUrl =
-                          Static["org.apache.ofbiz.product.product.ProductContentWrapper"].getProductContentAsText(
-                          cartLine.getProduct(), "SMALL_IMAGE_URL", locale, dispatcher, "string")! />
-                      <#if !smallImageUrl?string?has_content>
-                        <#assign smallImageUrl = "/images/defaultImage.jpg" />
-                      </#if>
-                      <span class="avatar mr-3 align-self-center" style="background-image: url('<@ofbizContentUrl>${requestAttributes.contentPathPrefix!}${smallImageUrl!}</@ofbizContentUrl>')"></span>
-                      <div>
-                        <strong>${cartLine.getName()!}</strong>
-                        <div class="small text-muted">${cartLine.getQuantity()?string.number} pieces &nbsp;&nbsp;<@ofbizCurrency amount=cartLine.getDisplayItemSubTotal() isoCode=shoppingCart.getCurrency()/></div>
-                      </div>
-                    </a>
-                    </#list>
-                    
-                    <div class="dropdown-divider"></div>
-                    <a href="<@ofbizUrl>view/showcart</@ofbizUrl>" class="dropdown-item text-center text-muted-dark">${uiLabelMap.OrderViewCart}</a>
-                  </div>
-        
-                </div>
-
+    <p>${uiLabelMap.OrderShoppingCartEmpty}</p>
+  </#if>
+  <ul>
+    <li>
+      <a href="<@ofbizUrl>view/showcart</@ofbizUrl>">[${uiLabelMap.OrderViewCart}]</a>
+    </li>
+    <#if (shoppingCartSize > 0)>
+      <#if !initialLocaleComplete?? || initialLocaleComplete?length == 2 >
+        <#if initialLocaleComplete?? && initialLocaleComplete?length == 2  && initialLocaleComplete == "fr">
+          <#assign initialLocaleComplete = "fr_FR"><#-- same idea can be used with other default locale -->
+        <#else>
+          <#assign initialLocaleComplete = "en_US">
+        </#if>
+      </#if>
+      <li id="quickCheckoutEnabled">
+        <a href="<@ofbizUrl>quickcheckout</@ofbizUrl>">[${uiLabelMap.OrderCheckoutQuick}]</a>
+      </li>
+      <li id="quickCheckoutDisabled" style="display:none" class="disabled">
+        [${uiLabelMap.OrderCheckoutQuick}]
+      </li>
+      <li id="onePageCheckoutEnabled">
+        <a href="<@ofbizUrl>onePageCheckout</@ofbizUrl>">[${uiLabelMap.EcommerceOnePageCheckout}]</a>
+      </li>
+      <li id="onePageCheckoutDisabled" style="display:none" class="disabled">
+        [${uiLabelMap.EcommerceOnePageCheckout}]
+      </li>
+      <#if shoppingCart?has_content && (shoppingCart.getGrandTotal() > 0)>
+        <li id="microCartPayPalCheckout">
+          <a href="<@ofbizUrl>setPayPalCheckout</@ofbizUrl>">
+            <img src="https://www.paypal.com/${initialLocaleComplete}/i/btn/btn_xpressCheckout.gif"
+                alt="[PayPal Express Checkout]"
+                onError="this.onerror=null;this.src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif'"/>
+          </a>
+        </li>
+      </#if>
+    <#else>
+      <li class="disabled">[${uiLabelMap.OrderCheckoutQuick}]</li>
+      <li class="disabled">[${uiLabelMap.EcommerceOnePageCheckout}]</li>
+    </#if>
+  </ul>
+</div>

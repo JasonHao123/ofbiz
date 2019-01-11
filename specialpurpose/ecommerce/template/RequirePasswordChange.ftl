@@ -24,39 +24,13 @@ under the License.
   <#assign username = autoUserLogin.userLoginId/>
 </#if>
 
-    <div class="row">
-            <div class="col col-login mx-auto">
+<h1>${uiLabelMap.CommonLogin}</h1>
+<br />
 
-              <form class="card" action="<@ofbizUrl>login${previousParams}</@ofbizUrl>" name="loginform" method="post">
-               <input type="hidden" name="requirePasswordChange" value="Y"/>
-                <div class="card-body p-6">
-             	<div class="text-center mb-6">
-            			<h3>${uiLabelMap.CommonPasswordChange}</h3>
-          		</div>
-          		<div class="form-group">
-                    <label class="form-label">${uiLabelMap.CommonUsername}</label>
-                    <input class="form-control"  type="text" readonly id="userName" name="USERNAME" value="<#if requestParameters.USERNAME?has_content>${requestParameters.USERNAME}<#elseif autoUserLogin?has_content>${autoUserLogin.userLoginId}</#if>">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">${uiLabelMap.CommonPassword}</label>
-                    <input class="form-control" type="password" name="PASSWORD" >
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">${uiLabelMap.CommonNewPassword}</label>
-                    <input class="form-control" type="password" name="newPassword" >
-                  </div>
-                   <div class="form-group">
-                    <label class="form-label">${uiLabelMap.CommonNewPasswordVerify}</label>
-                    <input class="form-control" type="password" name="newPasswordVerify" >
-                  </div>
-				<div class="form-footer">
-                    <button type="submit" class="btn btn-primary btn-block">${uiLabelMap.CommonLogin}</button>
-                  </div>
-                </div>
-              </form>
-              </div>
+<div style="float: center; width: 49%; margin-right: 5px; text-align: center;" class="screenlet">
+    <div class="screenlet-title-bar">
+        <div class="h3">${uiLabelMap.CommonPasswordChange}</div>
     </div>
-    <!--
     <div class="screenlet-body" style="text-align: center;">
       <form method="post" action="<@ofbizUrl>login${previousParams}</@ofbizUrl>" name="loginform">
           <input type="hidden" name="requirePasswordChange" value="Y"/>
@@ -87,7 +61,7 @@ under the License.
       </form>
     </div>
 </div>
--->
+
 <script language="JavaScript" type="text/javascript">
   <#if autoUserLogin?has_content>document.loginform.PASSWORD.focus();</#if>
   <#if !autoUserLogin?has_content>document.loginform.USERNAME.focus();</#if>

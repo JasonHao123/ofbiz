@@ -72,22 +72,84 @@ under the License.
 </script>
 <#assign fixedAssetExist = shoppingCart.containAnyWorkEffortCartItems() />
 <#-- change display format when rental items exist in the shoppingcart -->
+<div>
+  <h2>
+    <#if ((sessionAttributes.lastViewedProducts)?has_content && sessionAttributes.lastViewedProducts?size > 0)>
+      <#assign continueLink = "/product?product_id=" + sessionAttributes.lastViewedProducts.get(0) />
+    <#else>
+      <#assign continueLink = "/main" />
+    </#if>
+    <a href="<@ofbizUrl>${continueLink}</@ofbizUrl>" class="submenutext">
+      ${uiLabelMap.EcommerceContinueShopping}
+    </a>
+    <#if (shoppingCartSize > 0)>
+      <a href="<@ofbizUrl>checkoutoptions</@ofbizUrl>" class="submenutext">
+        ${uiLabelMap.OrderCheckout}
+      </a>
+    <#else>
+      <span class="submenutextrightdisabled">
+        ${uiLabelMap.OrderCheckout}
+      </span>
+    </#if>
+    ${uiLabelMap.CommonQuickAdd}
+  </h2>
+  <div>
+    <div>
+      <form method="post"
+          action="<@ofbizUrl>additem<#if requestAttributes._CURRENT_VIEW_?has_content>/${requestAttributes._CURRENT_VIEW_}</#if></@ofbizUrl>"
+          name="quickaddform">
+        <fieldset>
+          ${uiLabelMap.EcommerceProductNumber}
+          <input type="text" class="inputBox" name="add_product_id" value="${requestParameters.add_product_id!}" />
+          <#-- check if rental data present  insert extra fields in Quick Add-->
+          <#if (product?? && product.getString("productTypeId") == "ASSET_USAGE"
+              ) || (product?? && product.getString("productTypeId") == "ASSET_USAGE_OUT_IN")>
+            ${uiLabelMap.EcommerceStartDate}:
+            <input type="text" class="inputBox" size="10" name="reservStart"
+                value="${requestParameters.reservStart?default("")}" />
+            ${uiLabelMap.EcommerceLength}:
+            <input type="text" class="inputBox" size="2" name="reservLength"
+                value="${requestParameters.reservLength?default("")}" />
+            </div>
+            <div>
+            &nbsp;&nbsp;${uiLabelMap.OrderNbrPersons}:
+            <input type="text" class="inputBox" size="3" name="reservPersons"
+                value="${requestParameters.reservPersons?default("1")}" />
+          </#if>
+          ${uiLabelMap.CommonQuantity}:
+          <input type="text" class="inputBox" size="5" name="quantity"
+              value="${requestParameters.quantity?default("1")}" />
+          <input type="submit" class="smallSubmit" value="${uiLabelMap.OrderAddToCart}" />
+          <#-- <a href="javascript:document.quickaddform.submit()" class="button">
+                 <span>[${uiLabelMap.OrderAddToCart}]</span>
+               </a> -->
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+        document.quickaddform.add_product_id.focus();
+    //]]>
+</script>
 
 <div>
   <div>
     <div>
-      <div class="btn-list">
-        <a href="<@ofbizUrl>main</@ofbizUrl>" class="btn btn-secondary">
+      <div class="lightbuttontextdisabled">
+        <#--<a href="<@ofbizUrl>main</@ofbizUrl>" class="lightbuttontext">
               [${uiLabelMap.EcommerceContinueShopping}]
-            </a>
+            </a>-->
         <#if (shoppingCartSize > 0)>
-          <a href="javascript:document.cartform.submit();" class="btn btn-secondary">
+          <a href="javascript:document.cartform.submit();" class="submenutext">
             ${uiLabelMap.EcommerceRecalculateCart}
           </a>
-          <a href="<@ofbizUrl>emptycart</@ofbizUrl>" class="btn btn-secondary">
+          <a href="<@ofbizUrl>emptycart</@ofbizUrl>" class="submenutext">
             ${uiLabelMap.EcommerceEmptyCart}
           </a>
-          <a href="javascript:removeSelected();" class="btn btn-secondary">
+          <a href="javascript:removeSelected();" class="submenutext">
             ${uiLabelMap.EcommerceRemoveSelected}
           </a>
         <#else>
@@ -96,11 +158,11 @@ under the License.
           <span class="submenutextdisabled">${uiLabelMap.EcommerceRemoveSelected}</span>
         </#if>
         <#if (shoppingCartSize > 0)>
-          <a href="<@ofbizUrl>checkoutoptions</@ofbizUrl>" class="btn btn-secondary">
+          <a href="<@ofbizUrl>checkoutoptions</@ofbizUrl>" class="submenutextright">
             ${uiLabelMap.OrderCheckout}
           </a>
         <#else>
-          <span class="btn btn-secondary submenutextrightdisabled">${uiLabelMap.OrderCheckout}</span>
+          <span class="submenutextrightdisabled">${uiLabelMap.OrderCheckout}</span>
         </#if>
       </div>
     </div>
@@ -108,8 +170,7 @@ under the License.
     <h2>&nbsp;${uiLabelMap.OrderShoppingCart}</h2>
   </div>
   <div>
-    <#if (shoppingCartSize > 0)> 
-    
+    <#if (shoppingCartSize > 0)>
       <form method="post" action="<@ofbizUrl>modifycart</@ofbizUrl>" name="cartform">
         <fieldset>
           <input type="hidden" name="removeSelected" value="false" />
@@ -190,13 +251,13 @@ under the License.
                       </#if>
                       <#assign smallImageUrl =
                           Static["org.apache.ofbiz.product.product.ProductContentWrapper"].getProductContentAsText(
-                          cartLine.getProduct(), "SMALL_IMAGE_URL", locale, dispatcher, "string")! />
+                          cartLine.getProduct(), "SMALL_IMAGE_URL", locale, dispatcher, "url")! />
                       <#if !smallImageUrl?string?has_content>
                         <#assign smallImageUrl = "/images/defaultImage.jpg" />
                       </#if>
                       <#if smallImageUrl?string?has_content>
                         <a href="<@ofbizCatalogAltUrl productId=parentProductId/>">
-                          <img src="<@ofbizContentUrl>${requestAttributes.contentPathPrefix!}${smallImageUrl!}</@ofbizContentUrl>"
+                          <img src="<@ofbizContentUrl>${requestAttributes.contentPathPrefix!}${smallImageUrl}</@ofbizContentUrl>"
                               alt="Product Image" class="imageborder" />
                         </a>
                       </#if>
@@ -564,14 +625,14 @@ under the License.
     <div>
       <h2>${uiLabelMap.EcommerceYouMightAlsoIntrested}:</h2>
     </div>
-    <div class="row">
+    <div>
       <#-- random complementary products -->
       <#list associatedProducts as assocProduct>
-        
+        <div>
           ${setRequestAttribute("optProduct", assocProduct)}
           ${setRequestAttribute("listIndex", assocProduct_index)}
           ${screens.render("component://ecommerce/widget/CatalogScreens.xml#productsummary")}
-      
+        </div>
       </#list>
     </div>
   </div>

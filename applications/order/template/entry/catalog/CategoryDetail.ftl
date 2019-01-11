@@ -44,7 +44,7 @@ under the License.
     <#assign viewIndexMax = Static["java.lang.Math"].ceil((listSize)?double / viewSize?double)>
       <#if (viewIndexMax?int > 0)>
         <div class="product-prevnext">
-            <select name="pageSelect" class="form-control custom-select w-auto" onchange="callDocumentByPaginate(this[this.selectedIndex].value);">
+            <select name="pageSelect" onchange="callDocumentByPaginate(this[this.selectedIndex].value);">
                 <option value="#">${uiLabelMap.CommonPage} ${viewIndex?int + 1} ${uiLabelMap.CommonOf} ${viewIndexMax}</option>
                 <#if (viewIndex?int > 1)>
                     <#list 1..viewIndexMax as curViewNum>
@@ -131,9 +131,9 @@ under the License.
       <#if categoryImageUrl?string?has_content>
         style="position: relative; margin-top: ${height}px;"
       </#if>
-      class="productsummary-container row<#if (numCol?int > 1)> matrix</#if>">
+      class="productsummary-container<#if (numCol?int > 1)> matrix</#if>">
       <#if (numCol?int > 1)>
-        
+        <table>
       </#if>
         <#list productCategoryMembers as productCategoryMember>
           <#if (numCol?int == 1)>
@@ -142,19 +142,19 @@ under the License.
             ${setRequestAttribute("listIndex", productCategoryMember_index)}
             ${screens.render(productsummaryScreen)}
           <#else>
-              <#if (tabCol?int = 1)></#if>
-                  
+              <#if (tabCol?int = 1)><tr></#if>
+                  <td>
                       ${setRequestAttribute("optProductId", productCategoryMember.productId)}
                       ${setRequestAttribute("productCategoryMember", productCategoryMember)}
                       ${setRequestAttribute("listIndex", productCategoryMember_index)}
                       ${screens.render(productsummaryScreen)}
-                  
-              <#if (tabCol?int = numCol)></#if>
+                  </td>
+              <#if (tabCol?int = numCol)></tr></#if>
               <#assign tabCol = tabCol+1><#if (tabCol?int > numCol)><#assign tabCol = 1></#if>
            </#if>
         </#list>
       <#if (numCol?int > 1)>
-        
+        </table>
       </#if>
       </div>
     <#if paginateEcommerceStyle??>
